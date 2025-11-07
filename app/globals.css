@@ -19,3 +19,20 @@
 hr{border-color:#1f2937;margin:16px 0}
 .switch{display:inline-flex;align-items:center;gap:8px;margin-right:12px}
 .switch input{accent-color:#3b82f6;width:18px;height:18px}
+
+/* Gantt */
+.gantt{overflow-x:auto;border:1px solid #253041;border-radius:12px}
+.ganttGrid{display:grid}
+.ganttHeader{display:contents}
+.ganttHeader .cell{padding:6px 8px;font-size:12px;color:#a7b1bd;border-bottom:1px solid #253041}
+.ganttRow{display:contents}
+.taskCell, .dayCell, .actionCell{border-bottom:1px dashed #1f2937}
+.taskCell{padding:10px 8px;font-weight:600}
+.dayCell{position:relative;height:34px;border-left:1px solid #17202b}
+.dayCell:nth-child(odd){background:#0b1420}
+.bar{position:absolute;top:7px;height:20px;border-radius:8px;display:flex;align-items:center;gap:6px;padding:0 8px;font-size:12px;white-space:nowrap}
+.bar.hot{background:#3b1b1b;color:#ff8b8b;border:1px solid #6b1d1d}
+.bar.warm{background:#3b2a15;color:#ffcc80;border:1px solid #6b3d0f}
+.allocPill{background:#0b2140;color:#9cc2ff;border:1px solid #214c8e;border-radius:12px;padding:2px 6px;font-size:11px}
+.capPill{position:absolute;top:6px;left:6px;background:#12321f;color:#69d391;border:1px solid #1d7a42;border-radius:12px;padding:2px 6px;font-size:11px}
+.actionCell{padding:8px;display:flex;gap:8px;align-items:center;justify-content:flex-start}
