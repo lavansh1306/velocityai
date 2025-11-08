@@ -48,11 +48,15 @@ hr{border-color:#1f2937;margin:16px 0}
 .bar.ok{background:#18351f;color:#79d08f;border:1px solid #1e6f43}
 .allocPill{background:#0b2140;color:#9cc2ff;border:1px solid #214c8e;border-radius:12px;padding:2px 6px;font-size:11px}
 
-/* Weekly capacity pill */
-.capacityBlock{position:absolute;top:6px;left:6px;background:#12321f;color:#69d391;border:1px solid #1d7a42;border-radius:12px;padding:2px 6px;font-size:11px}
+/* Weekly ghost + tick */
+.ghostBar{position:absolute;top:0;height:20px;border:1px dashed #6aa7ff;border-radius:8px;background:transparent}
+.oldDueTick{position:absolute;top:-2px;width:2px;height:24px;background:#6aa7ff;border-radius:1px}
 
 /* Actions */
 .actionCell{padding:8px;display:flex;gap:8px;align-items:center}
+
+/* Weekly capacity pill */
+.capacityBlock{position:absolute;top:6px;left:6px;background:#12321f;color:#69d391;border:1px solid #1d7a42;border-radius:12px;padding:2px 6px;font-size:11px}
 
 /* Legend */
 .legend{display:flex;align-items:center;gap:16px;padding:8px 12px;border-bottom:1px solid #253041;color:#a7b1bd;font-size:12px;flex-wrap:wrap}
