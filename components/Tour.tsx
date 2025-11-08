@@ -21,9 +21,8 @@ type Props = {
 export default function Tour({ open, index, steps, onNext, onPrev, onClose }: Props) {
   useEffect(() => {
     if (!open) return
-    // highlight target and scroll into view
     const step = steps[index]
-    // remove old highlight
+    // clear old highlight
     document.querySelectorAll('.tour-highlight').forEach(el => el.classList.remove('tour-highlight'))
     if (step?.targetId) {
       const el = document.getElementById(step.targetId)
@@ -42,17 +41,29 @@ export default function Tour({ open, index, steps, onNext, onPrev, onClose }: Pr
   const total = steps.length
 
   return (
-    <div className="tourOverlay">
-      <div className="tourCard">
-        <div className="tourTitle">{step.title}</div>
-        <div className="tourText">{step.text}</div>
-        <div className="tourBtns">
-          <button className="btn secondary" onClick={onPrev} disabled={index===0}>Back</button>
-          <button className="btn" onClick={onNext}>{index===total-1 ? 'Finish' : 'Next'}</button>
-          <button className="btn ghost" onClick={onClose}>Skip</button>
+    <>
+      <div className="tourOverlay">
+        <div className="tourCard">
+          <h3 style={{marginTop:0}}>{step.title}</h3>
+          <p className="small" style={{marginTop:8}}>{step.text}</p>
+          <div style={{display:'flex',gap:8,justifyContent:'center',marginTop:8}}>
+            <button className="btn secondary" onClick={onPrev} disabled={index===0}>Back</button>
+            <button className="btn" onClick={onNext}>{index===total-1 ? 'Finish' : 'Next'}</button>
+            <button className="btn ghost" onClick={onClose}>Skip</button>
+          </div>
+          <div className="small" style={{marginTop:8}}>Step {index+1} of {total}</div>
         </div>
-        <div className="tourProgress">Step {index+1} of {total}</div>
       </div>
-    </div>
+
+      {/* Built-in global highlight style so you don't need to touch CSS */}
+      <style jsx global>{`
+        .tour-highlight{
+          outline: 2px solid #3b82f6 !important;
+          box-shadow: 0 0 0 6px rgba(59,130,246,.35) !important;
+          border-radius: 12px !important;
+          transition: box-shadow .2s ease;
+        }
+      `}</style>
+    </>
   )
 }
