@@ -76,49 +76,69 @@ export default function Page(){
   }
 
   // Allocate pooled capacity to a task
-  function allocate(taskId:string, hours:number){
-    let minsNeeded = hours*60
-    const order: Array<'High'|'Medium'|'Low'> = ['High','Medium','Low']
-    const newTokens = [...tokens]
-    for(const tier of order){
-      for(let i=0;i<newTokens.length;i++){
-        const t = newTokens[i]
-        if(t.confidence!==tier || t.minutes<=0) continue
-        const take = Math.min(t.minutes, minsNeeded)
-        newTokens[i] = {...t, minutes: t.minutes - take}
-        minsNeeded -= take
-        if(minsNeeded<=0) break
-      }
-      if(minsNeeded<=0) break
+ function allocate(taskId: string, hours: number){
+  let minsNeeded = hours * 60
+  const order: Array<'High'|'Medium'|'Low'> = ['High','Medium','Low']
+  const newTokens = [...tokens]
+  for (const tier of order){
+    for (let i=0;i<newTokens.length;i++){
+      const t = newTokens[i]
+      if (t.confidence !== tier || t.minutes <= 0) continue
+      const take = Math.min(t.minutes, minsNeeded)
+      newTokens[i] = { ...t, minutes: t.minutes - take }
+      minsNeeded -= take
+      if (minsNeeded <= 0) break
     }
-    setTokens(newTokens)
-    setTasks(ts=>ts.map(t=> t.id===taskId ? {...t, allocatedMinutes:(t.allocatedMinutes||0)+hours*60} : t))
+    if (minsNeeded <= 0) break
   }
+  setTokens(newTokens)
 
-  // Close task with earlier actual date → Operational dollars
-  function closeTask(taskId:string, iso:string){
-setTasks(ts=>{
-const t = ts.find(x=>x.id===taskId); if(!t) return ts
-// Compare to scheduled due date (what execs expect): if we finish earlier than due, we saved those days
-const schedDur = Math.max(1, daysBetweenISO(t.start, t.due))
-const actualDur = Math.max(1, daysBetweenISO(t.start, iso))
-const daysSaved = Math.max(0, schedDur - actualDur) // if iso < due → positive days saved
-const value = daysSaved * t.codPerDay
-const tier: 'A'|'B'|'C' = (t.slackDays<=0 && daysSaved>0) ? 'B' : 'C'
-     if(t.capability && t.allocatedMinutes){
-  const capHrs = t.allocatedMinutes/60
-  setEvidence(ev=>[
-    { label:'Capability growth', value: capHrs*120, tier:'C', details: `${capHrs.toFixed(1)}h x $120/h (proxy)` },
-    ...ev
-  ])
+  // 8h ≈ 1 day predicted shorten (demo logic)
+  setTasks(ts => ts.map(t => {
+    if (t.id !== taskId) return t
+    const predicted = Math.ceil(hours / 8)
+    return { ...t, allocatedMinutes: (t.allocatedMinutes || 0) + hours * 60, predictedDaysSaved: (t.predictedDaysSaved || 0) + predicted }
+  }))
 }
-setEvidence(ev=>[
-  { taskId:t.id, daysSaved, value, tier, details: `Closed ${daysSaved.toFixed(1)}d earlier than due; CoD/day $${t.codPerDay.toLocaleString()}.` },
-  ...ev
-])
-return ts.map(x=> x.id===taskId ? {...x, status:'closed', due: iso} : x)
-})
-} 
+  
+
+
+  // Close task with earlier actual date → Operational dollars and ghost tick
+function closeTask(taskId: string, iso: string){
+  setTasks(ts => {
+    const t = ts.find(x => x.id === taskId)
+    if (!t) return ts
+
+    // 1) Compare to scheduled due date (what execs expect)
+    const schedDur  = Math.max(1, daysBetweenISO(t.start, t.due))      // planned start→due
+    const actualDur = Math.max(1, daysBetweenISO(t.start, iso))        // start→actual close
+    const daysSaved = Math.max(0, schedDur - actualDur)                // if iso < due → positive
+    const value     = daysSaved * t.codPerDay
+    const tier: 'A'|'B'|'C' = (t.slackDays <= 0 && daysSaved > 0) ? 'B' : 'C'
+
+    // 2) Optional capability credit (from allocated minutes)
+    if (t.capability && t.allocatedMinutes) {
+      const capHrs = t.allocatedMinutes / 60
+      setEvidence(ev => [
+        { label: 'Capability growth', value: capHrs * 120, tier: 'C', details: `${capHrs.toFixed(1)}h x $120/h (proxy)` },
+        ...ev
+      ])
+    }
+
+    // 3) Operational evidence: realized days saved vs due
+    setEvidence(ev => [
+      { taskId: t.id, daysSaved, value, tier, details: `Closed ${daysSaved.toFixed(1)}d earlier than due; CoD/day $${t.codPerDay.toLocaleString()}.` },
+      ...ev
+    ])
+
+    // 4) Write back: keep a copy of the original due for the ghost tick; move due earlier; clear prediction
+    const plannedDue = t.plannedDue ?? t.due
+    return ts.map(x => x.id === taskId
+      ? { ...x, status: 'closed', plannedDue, predictedDaysSaved: 0, due: iso }
+      : x
+    )
+  })
+}
 
   // Harvest hard savings
   function harvestRPA(){
