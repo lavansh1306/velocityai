@@ -53,13 +53,19 @@ export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView 
   const wrapRef = useRef<HTMLDivElement>(null)
   const [gridW, setGridW] = useState<number | null>(null) // null until measured (avoid hydration warnings)
 
-  // weekly grid
-  const LEFT_COL = 280
-  const RIGHT_COL = 280
-  const ROW_H = 36
-  const HEADER_H = 30
-  const CAP_ROW_H = 36
+  // weekly grid — make left/right columns and row heights responsive using measured gridW
   const MIN_WEEKS = 5
+  const defaultLeft = 280
+  const defaultRight = 280
+  const midLeft = 200
+  const midRight = 160
+  const smallLeft = 160
+  const smallRight = 120
+  const ROW_H = gridW && gridW < 640 ? 30 : 36
+  const HEADER_H = gridW && gridW < 640 ? 28 : 30
+  const CAP_ROW_H = gridW && gridW < 640 ? 32 : 36
+  const LEFT_COL = gridW ? (gridW < 640 ? smallLeft : gridW < 900 ? midLeft : defaultLeft) : defaultLeft
+  const RIGHT_COL = gridW ? (gridW < 640 ? smallRight : gridW < 900 ? midRight : defaultRight) : defaultRight
 
   // measure container width after mount (for arrow anchors)
   useEffect(() => {
@@ -171,7 +177,7 @@ export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView 
       )}
 
       {/* Grid */}
-      <div className="ganttGrid" style={{ gridTemplateColumns: `${LEFT_COL}px repeat(${spanWeeks}, 1fr) ${RIGHT_COL}px` }}>
+  <div className="ganttGrid" style={{ gridTemplateColumns: `${LEFT_COL}px repeat(${spanWeeks}, 1fr) ${RIGHT_COL}px` }}>
         <div className="ganttHeader">
           <div className="cell headT">Task</div>
           {header}
