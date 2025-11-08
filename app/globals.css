@@ -1,9 +1,15 @@
 :root { --bg:#0c1116; --card:#111826; --text:#e6edf3; --muted:#a7b1bd; --green:#22c55e; --amber:#f59e0b; --red:#ef4444; --blue:#3b82f6; }
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}
+
+/* Layout */
 .container{max-width:1400px;margin:40px auto;padding:0 40px}
 .row{display:flex;gap:24px;flex-wrap:wrap}
 .card{background:var(--card);border:1px solid #253041;border-radius:12px;padding:24px;margin-bottom:32px}
 .kpi{flex:1;min-width:250px}
+
+/* Buttons/badges/inputs */
 .btn{background:var(--blue);border:none;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer}
 .btn.secondary{background:#1f2937}
 .btn.ghost{background:transparent;border:1px solid #253041;color:#e6edf3}
@@ -12,6 +18,8 @@
 .badge.red{background:#3b1b1b;color:#ff8b8b}
 .badge.amber{background:#3b2a15;color:#ffcc80}
 .input{background:#0b1420;border:1px solid #253041;color:#e6edf3;padding:8px;border-radius:8px}
+
+/* Tables/text */
 .table{width:100%;border-collapse:collapse}
 .table th,.table td{border-bottom:1px solid #253041;padding:10px;text-align:left;font-size:14px}
 .h{margin:0 0 10px}
@@ -20,9 +28,8 @@ hr{border-color:#1f2937;margin:16px 0}
 .switch{display:inline-flex;align-items:center;gap:8px;margin-right:12px}
 .switch input{accent-color:#3b82f6;width:18px;height:18px}
 
-/* Gantt */
-/* No horizontal scrollbar on Gantt */
-.gantt{position:relative; overflow-x:hidden; border:1px solid #253041; border-radius:12px}
+/* Gantt (weekly, no horizontal scroll) */
+.gantt{position:relative;overflow-x:hidden;border:1px solid #253041;border-radius:12px}
 .ganttGrid{display:grid}
 .ganttHeader{display:contents}
 .headT,.headA{padding:6px 8px;font-weight:600}
@@ -41,33 +48,26 @@ hr{border-color:#1f2937;margin:16px 0}
 .bar.ok{background:#18351f;color:#79d08f;border:1px solid #1e6f43}
 .allocPill{background:#0b2140;color:#9cc2ff;border:1px solid #214c8e;border-radius:12px;padding:2px 6px;font-size:11px}
 
-
 /* Weekly capacity pill */
-.capPill{position:absolute;top:6px;left:6px;background:#12321f;color:#69d391;border:1px solid #1d7a42;border-radius:12px;padding:2px 6px;font-size:11px}
+.capacityBlock{position:absolute;top:6px;left:6px;background:#12321f;color:#69d391;border:1px solid #1d7a42;border-radius:12px;padding:2px 6px;font-size:11px}
 
 /* Actions */
 .actionCell{padding:8px;display:flex;gap:8px;align-items:center}
 
 /* Legend */
-.legend{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid #253041;color:#a7b1bd;font-size:12px}
-.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-.dot.red{background:#ef4444}
-.dot.amber{background:#f59e0b}
-.dot.green{background:#22c55e}
+.legend{display:flex;align-items:center;gap:16px;padding:8px 12px;border-bottom:1px solid #253041;color:#a7b1bd;font-size:12px;flex-wrap:wrap}
+.legendItem{display:flex;align-items:center;gap:8px}
+.legendColor{width:10px;height:10px;border-radius:50%}
+.legendColor.red{background:#ef4444}
+.legendColor.yellow{background:#f59e0b}
+.legendColor.green{background:#22c55e}
 
 /* Dependency arrows */
 .depsSvg{position:absolute;top:0;left:0;pointer-events:none}
 
-.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-.dot.red{background:#ef4444}
-.dot.amber{background:#f59e0b}
-.dot.green{background:#22c55e}
-.depsSvg{position:absolute;top:0;left:0;pointer-events:none}
-.container { max-width: 1400px; margin: 40px auto; padding: 0 40px; }
-.row { gap: 24px; }
-.card { padding: 24px; margin-bottom: 32px; }
-.tourOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 10; display: flex; align-items: center; justify-content: center; }
-.tourCard { background: var(--card); border: 1px solid #253041; border-radius: 12px; padding: 24px; max-width: 400px; text-align: center; }
-.tourCard h3 { margin-bottom: 12px; }
-.tourCard p { margin-bottom: 16px; }
-.tourCard button { margin-top: 8px; }
+/* Tour overlay (if used) */
+.tourOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10;display:flex;align-items:center;justify-content:center}
+.tourCard{background:var(--card);border:1px solid #253041;border-radius:12px;padding:24px;max-width:400px;text-align:center}
+.tourCard h3{margin-bottom:12px}
+.tourCard p{margin-bottom:16px}
+.tourCard button{margin-top:8px}
