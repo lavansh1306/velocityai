@@ -54,3 +54,5 @@ hr{border-color:#1f2937;margin:16px 0}
 .tourCard h3 { margin-bottom: 12px; }
 .tourCard p { margin-bottom: 16px; }
 .tourCard button { margin-top: 8px; }
+
+.depsSvg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
