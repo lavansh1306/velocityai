@@ -1,66 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# VELOCITYAI
 
-## What’s inside
+VelocityAI is a cutting-edge Next.js application designed to demonstrate the power of AI-driven tools in optimizing workflows, saving time, and generating measurable value. This project showcases interactive components, guided tours, and analytics integration to provide a seamless user experience.
 
-- App Router (`app/`)
-- Interactive demo components: `components/Gantt.tsx` and `components/Tour.tsx`
-- Styling in `app/globals.css` (no Tailwind required)
+## Tech Stack
 
-## Prerequisites
+- **Framework**: [Next.js 16](https://nextjs.org) - React-based framework for server-side rendering and static site generation.
+- **Language**: TypeScript - Ensures type safety and developer productivity.
+- **Styling**: CSS - Custom styles defined in `app/globals.css`.
+- **Analytics**: [Vercel Analytics](https://vercel.com/analytics) - Tracks page views and user interactions.
+- **Node.js**: Version 18+ - Required runtime environment.
+- **ESLint**: For code linting and maintaining code quality.
+- **TailwindCSS**: Utility-first CSS framework for rapid UI development.
 
-- Node.js 18+ and npm (or pnpm, yarn, bun)
+## Features
 
-If npm isn’t installed on your system, install it from nodejs.org or use your OS package manager. On Linux, you can install Node with nvm:
+1. **Interactive Gantt Chart**:
+   - Visualize tasks, dependencies, and timelines.
+   - Allocate resources dynamically and track progress.
+   - Critical path highlighting for better project management.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-. "$HOME/.nvm/nvm.sh"
-nvm install --lts
-nvm use --lts
+2. **Guided Tour**:
+   - Step-by-step walkthrough of the app's features.
+   - Highlights key components and their functionality.
+
+3. **AI-Driven Insights**:
+   - Simulate AI tools like RPA and AI Agents to free up capacity.
+   - Calculate operational value, cost avoidance, and strategic growth.
+
+4. **Analytics Integration**:
+   - Tracks user interactions and page views using Vercel Analytics.
+
+5. **Responsive Design**:
+   - Optimized for various screen sizes and devices.
+
+## Project Structure
+
 ```
+velocityai-demo/
+├── app/
+│   ├── globals.css       # Global styles
+│   ├── layout.tsx        # Root layout with metadata and fonts
+│   ├── page.tsx          # Main page with Gantt chart and guided tour
+├── components/
+│   ├── Gantt.tsx         # Gantt chart component
+│   ├── Tour.tsx          # Guided tour component
+│   ├── VercelAnalytics.tsx # Vercel Analytics integration
+├── types/
+│   ├── vercel-analytics.d.ts # Type declarations for analytics
+├── public/               # Static assets
+├── package.json          # Project dependencies and scripts
+├── tsconfig.json         # TypeScript configuration
+├── vercel.json           # Vercel deployment configuration
+```
+
+## How It Works
+
+1. **Task Management**:
+   - Tasks are displayed in a Gantt chart with dependencies and timelines.
+   - Users can allocate resources to tasks and mark them as complete.
+
+2. **AI Simulation**:
+   - Simulates the impact of AI tools on workflow efficiency.
+   - Calculates time saved and translates it into monetary value.
+
+3. **Guided Demo**:
+   - Users can run a 30-second demo to see the app in action.
+   - Highlights key features and their benefits.
+
+4. **Analytics**:
+   - Tracks user interactions to provide insights into app usage.
 
 ## Getting Started
 
-First, install dependencies and run the development server:
+### Prerequisites
 
-```bash
-npm install
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18+ and npm (or pnpm, yarn, bun).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file. The Gantt view and guided tour are interactive; try the “Start guided demo” and “Run 30‑sec demo” buttons.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/lavansh1306/velocityai.git
+   cd velocityai-demo
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+4. Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `dev`: Start the development server.
+- `build`: Create a production build.
+- `start`: Run the production server locally.
+- `lint`: Run ESLint to check for code quality.
 
-## Deploy on Vercel
+## Deployment
 
-There is a minimal `vercel.json` checked in to ensure correct defaults.
+### Vercel
 
-### One‑click (recommended)
-
-1. Push your repo to GitHub.
-2. Go to https://vercel.com/new and import the repository.
-3. Framework: Next.js. Build command: `npm run build`. Output: `.next` (defaults are fine).
+1. Push your repository to GitHub.
+2. Import the repository into Vercel.
+3. Use the following settings:
+   - Framework: Next.js
+   - Build Command: `npm run build`
+   - Output Directory: `.next`
 4. Click Deploy.
 
-### From the CLI
+### CLI Deployment
 
 ```bash
 npm i -g vercel
@@ -68,17 +123,15 @@ vercel login
 vercel
 ```
 
-Subsequent deploys: `vercel --prod`.
+Subsequent deploys:
+```bash
+vercel --prod
+```
 
-### Troubleshooting
+## License
 
-- If the build fails due to Node/npm not found locally, use `nvm` (see above) or build directly on Vercel.
-- If ESLint or TypeScript errors appear, run `npm run build` locally to see the exact messages and report them as issues.
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-## Scripts
+---
 
-- `dev` – start the dev server
-- `build` – production build
-- `start` – run the production server locally
-- `lint` – run ESLint
-# velocityai
+Crafted with ❤️ by the VelocityAI team.
