@@ -231,8 +231,9 @@ export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView 
                           <div
                             className="ghostBar"
                             style={{
-                              left: `calc((${r.spanWeeks} - ${predFrac}) * 100% / ${spanWeeks})`,
-                              width: `calc(${predFrac} * 100% / ${spanWeeks})`
+                              // Show the fraction of this task's own bar predicted to be saved.
+                              left: `${100 - (predFrac / r.spanWeeks) * 100}%`,
+                              width: `${(predFrac / r.spanWeeks) * 100}%`
                             }}
                             title={`Predicted shorten: ${predDays}d`}
                           />
