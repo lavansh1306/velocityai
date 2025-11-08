@@ -97,27 +97,28 @@ export default function Page(){
 
   // Close task with earlier actual date → Operational dollars
   function closeTask(taskId:string, iso:string){
-    setTasks(ts=>{
-      const t = ts.find(x=>x.id===taskId); if(!t) return ts
-      const planned = t.baselineDays
-      const actual  = Math.max(1, daysBetweenISO(t.start, iso))
-      const daysSaved = Math.max(0, planned - actual) // planned vs actual
-      const value = daysSaved * t.codPerDay
-      const tier: 'A'|'B'|'C' = (t.slackDays<=0 && daysSaved>0) ? 'B' : 'C'
-      if(t.capability && t.allocatedMinutes){
-        const capHrs = t.allocatedMinutes/60
-        setEvidence(ev=>[
-          { label:'Capability growth', value: capHrs*120, tier:'C', details: `${capHrs.toFixed(1)}h x $120/h (proxy)` },
-          ...ev
-        ])
-      }
-      setEvidence(ev=>[
-        { taskId:t.id, daysSaved, value, tier, details: `Closed ${daysSaved.toFixed(1)}d faster; CoD/day $${t.codPerDay.toLocaleString()}.` },
-        ...ev
-      ])
-      return ts.map(x=> x.id===taskId ? {...x, status:'closed', due: iso} : x)
-    })
-  }
+setTasks(ts=>{
+const t = ts.find(x=>x.id===taskId); if(!t) return ts
+// Compare to scheduled due date (what execs expect): if we finish earlier than due, we saved those days
+const schedDur = Math.max(1, daysBetweenISO(t.start, t.due))
+const actualDur = Math.max(1, daysBetweenISO(t.start, iso))
+const daysSaved = Math.max(0, schedDur - actualDur) // if iso < due → positive days saved
+const value = daysSaved * t.codPerDay
+const tier: 'A'|'B'|'C' = (t.slackDays<=0 && daysSaved>0) ? 'B' : 'C'
+     if(t.capability && t.allocatedMinutes){
+  const capHrs = t.allocatedMinutes/60
+  setEvidence(ev=>[
+    { label:'Capability growth', value: capHrs*120, tier:'C', details: `${capHrs.toFixed(1)}h x $120/h (proxy)` },
+    ...ev
+  ])
+}
+setEvidence(ev=>[
+  { taskId:t.id, daysSaved, value, tier, details: `Closed ${daysSaved.toFixed(1)}d earlier than due; CoD/day $${t.codPerDay.toLocaleString()}.` },
+  ...ev
+])
+return ts.map(x=> x.id===taskId ? {...x, status:'closed', due: iso} : x)
+})
+} 
 
   // Harvest hard savings
   function harvestRPA(){
