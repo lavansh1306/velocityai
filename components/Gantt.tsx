@@ -119,10 +119,9 @@ export default function Gantt({tasks, capacity, onAllocate, onComplete, onView}:
   return (
     <div className="gantt" ref={wrapRef}>
       {/* Legend */}
-      <div className="legend">
-        <span className="dot red"></span> Critical (0 slack)
-        <span className="dot amber" style={{marginLeft:16}}></span> Near (≤ 1 week slack)
-        <span className="dot green" style={{marginLeft:16}}></span> On track (> 1 week)
+      <div className="legend"> <span className="dot red"></span> Critical (0 slack) 
+        <span className="dot amber" style={{marginLeft:16}}></span> Near (&le; 1 week slack) 
+        <span className="dot green" style={{marginLeft:16}}></span> On track (&gt; 1 week) 
       </div>
 
       {/* SVG arrows */}
