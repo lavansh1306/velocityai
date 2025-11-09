@@ -39,7 +39,11 @@ export default function Page(){
   const [tasks, setTasks] = useState<Task[]>(seeded)
   const [tokens, setTokens] = useState<Token[]>([])
   const [cap, setCap] = useState<CapEvent[]>([])
-  const [evidence, setEvidence] = useState<Evidence[]>([])
+  const [evidence, setEvidence] = useState<Evidence[]>([
+    { label:'RPA contractor reduction', value:4560, tier:'H', details: 'Reduced contractors by 48h @ $95/h.' },
+    { label:'AI Agent cost avoided', value:2847, tier:'H', details: '437 deflected x $6.5/ticket.' },
+    { label:'More qualified deals (strategic)', value:67200, tier:'L', details: '12 deals x $5,600 value/deal.' },
+  ])
 
   const [simRPA, setSimRPA] = useState(true)
   const [simSVC, setSimSVC] = useState(true)
@@ -53,6 +57,19 @@ export default function Page(){
   const [tourIdx, setTourIdx]   = useState(0)
 
   useEffect(()=>{ mintCapacity() },[simRPA, simSVC])
+
+  // Initialize with default RPA evidence
+  useEffect(()=>{
+    const rpa = tokens.find(t=>t.source.includes('RPA'))
+    if(rpa && evidence.length === 0){
+      const hours = rpa.minutes/60
+      const contractorHours = hours * 0.3
+      const dollars = contractorHours * 95
+      setEvidence([
+        { label:'RPA contractor reduction', value:dollars, tier:'H', details: `Reduced contractors by ${Math.round(contractorHours)}h @ $95/h.` }
+      ])
+    }
+  },[tokens, evidence.length])
 
   // Capacity minting → tokens + weekly capacity pills
   function mintCapacity(){
@@ -153,9 +170,9 @@ function closeTask(taskId: string, iso: string){
     const hours = rpa.minutes/60
     const contractorHours = hours * 0.3
     const dollars = contractorHours * 95
-    setEvidence(ev=>[
+    setEvidence(prev=>[
       { label:'RPA contractor reduction', value:dollars, tier:'H', details: `Reduced contractors by ${Math.round(contractorHours)}h @ $95/h.` },
-      ...ev
+      ...prev.filter(e=>e.label!=='RPA contractor reduction').slice(0,2)
     ])
   }
   function harvestService(){
@@ -163,15 +180,15 @@ function closeTask(taskId: string, iso: string){
     if(!svc) return
     const tickets = Math.round(svc.minutes / STC.serviceMinPerTicket)
     const dollars = tickets * 6.5
-    setEvidence(ev=>[
+    setEvidence(prev=>[
       { label:'AI Agent cost avoided', value:dollars, tier:'H', details: `${tickets} deflected x $6.5/ticket.` },
-      ...ev
+      ...prev.filter(e=>e.label!=='AI Agent cost avoided').slice(0,2)
     ])
   }
   function recordSQLLift(n=12){
-    setEvidence(ev=>[
+    setEvidence(prev=>[
       { label:'More qualified deals (strategic)', value:n*5600, tier:'L', details: `${n} deals x $5,600 value/deal.` },
-      ...ev
+      ...prev.filter(e=>e.label!=='More qualified deals (strategic)').slice(0,2)
     ])
   }
 
@@ -331,29 +348,23 @@ function closeTask(taskId: string, iso: string){
             </div>
           </div>
 
-          {/* Simulation Toggles Section */}
-          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}}>
-            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
-              <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Simulation toggles</h3>
-              <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
-                <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'14px',color:'#9ca3af'}}>
-                  <input type="checkbox" checked={simRPA} onChange={e=>setSimRPA(e.target.checked)} style={{width:'16px',height:'16px',cursor:'pointer'}}/>
-                  RPA back‑office automation
-                </label>
-                <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'14px',color:'#9ca3af'}}>
-                  <input type="checkbox" checked={simSVC} onChange={e=>setSimSVC(e.target.checked)} style={{width:'16px',height:'16px',cursor:'pointer'}}/>
-                  AI Agent resolves routine questions
-                </label>
-              </div>
-              <p style={{fontSize:'12px',color:'#9ca3af',margin:'12px 0 0 0'}}>Toggling changes capacity sources and harvestable savings.</p>
-            </div>
-          </div>
-
           {/* Capacity Sources Section */}
           <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}}>
             <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}}>
               <div style={{padding:'24px',borderBottom:'1px solid #1e3a5f'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0'}}>Capacity sources (summary)</h3>
+                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Capacity sources (summary)</h3>
+                {/* Inline simulation toggles */}
+                <div style={{display:'flex',gap:'24px',alignItems:'center',flexWrap:'wrap'}}>
+                  <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'14px',color:'#9ca3af'}}>
+                    <input type="checkbox" checked={simRPA} onChange={e=>setSimRPA(e.target.checked)} style={{width:'16px',height:'16px',cursor:'pointer',accentColor:'#2563eb'}}/>
+                    RPA back‑office automation
+                  </label>
+                  <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'14px',color:'#9ca3af'}}>
+                    <input type="checkbox" checked={simSVC} onChange={e=>setSimSVC(e.target.checked)} style={{width:'16px',height:'16px',cursor:'pointer',accentColor:'#2563eb'}}/>
+                    AI Agent resolves routine questions
+                  </label>
+                </div>
+                <p style={{fontSize:'12px',color:'#9ca3af',margin:'12px 0 0 0'}}>Toggling changes capacity sources and harvestable savings.</p>
               </div>
               <div style={{padding:'24px',overflowX:'auto'}}>
                 <table style={{width:'100%',borderCollapse:'collapse',fontSize:'14px'}}>
@@ -381,69 +392,71 @@ function closeTask(taskId: string, iso: string){
             </div>
           </div>
 
-          {/* Harvest / Strategic Actions Section */}
+          {/* Harvest / Strategic Actions + Evidence Log Section (Combined) */}
           <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}} id="harvest">
-            <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 24px 0'}}>Harvest / Strategic actions</h3>
-            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))',gap:'24px'}}>
-              {/* RPA Card */}
-              <div 
-                onClick={() => setActiveHarvest('rpa')}
-                style={{background:'#0f1b2d',border:activeHarvest === 'rpa' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'24px',cursor:'pointer',transition:'all 0.2s'}}
-              >
-                <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>RPA contractor reduction</h4>
-                <button className="btn" onClick={harvestRPA} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Recognize hard savings</button>
-                <p style={{fontSize:'12px',color:'#9ca3af',margin:'0'}}>Counted only when POs/seats/contracts are reduced.</p>
-              </div>
-              {/* AI Agent Card */}
-              <div 
-                onClick={() => setActiveHarvest('service')}
-                style={{background:'#0f1b2d',border:activeHarvest === 'service' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'24px',cursor:'pointer',transition:'all 0.2s'}}
-              >
-                <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>AI Agent cost avoided</h4>
-                <button className="btn" onClick={harvestService} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Recognize cost avoided</button>
-              </div>
-              {/* Record Growth Card */}
-              <div 
-                onClick={() => setActiveHarvest('growth')}
-                style={{background:'#0f1b2d',border:activeHarvest === 'growth' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'24px',cursor:'pointer',transition:'all 0.2s'}}
-              >
-                <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Record growth</h4>
-                <button className="btn" onClick={()=>recordSQLLift(12)} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Add qualified deals → $</button>
-              </div>
-            </div>
-          </div>
-
-          {/* Evidence Log Section */}
-          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}} id="evidence">
             <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}}>
+              {/* Header */}
               <div style={{padding:'24px',borderBottom:'1px solid #1e3a5f'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0'}}>Evidence log (realized)</h3>
+                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0'}}>Harvest / Strategic actions</h3>
               </div>
-              <div style={{padding:'24px',overflowX:'auto'}}>
-                <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px'}}>
-                  <thead>
-                    <tr style={{borderBottom:'1px solid #1e3a5f'}}>
-                      <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Item</th>
-                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Days saved</th>
-                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>$ value</th>
-                      <th style={{textAlign:'center',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Tier</th>
-                      <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Details</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {evidence.map((e,i)=>(
-                      <tr key={i} style={{borderBottom:'1px solid #1e3a5f'}}>
-                        <td style={{padding:'12px 0',color:'#ffffff'}}>{e.taskId ? (tasks.find(x=>x.id===e.taskId)?.name || e.taskId) : (e.label || 'Item')}</td>
-                        <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>{e.daysSaved!==undefined ? e.daysSaved.toFixed(1) : '—'}</td>
-                        <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>${Math.round(e.value).toLocaleString()}</td>
-                        <td style={{textAlign:'center',padding:'12px 0'}}>
-                          <span style={{display:'inline-block',padding:'4px 8px',borderRadius:'4px',fontSize:'11px',fontWeight:'600',background:e.tier==='H'?'#10b981':e.tier==='M'?'#f59e0b':'#ef4444',color:'#ffffff'}}>{e.tier}</span>
-                        </td>
-                        <td style={{padding:'12px 0',color:'#9ca3af',fontSize:'12px'}}>{e.details}</td>
+              
+              {/* Harvest Cards */}
+              <div style={{padding:'20px',borderBottom:'1px solid #1e3a5f',display:'grid',gridTemplateColumns:'repeat(3, 1fr)',gap:'16px'}}>
+                {/* RPA Card */}
+                <div 
+                  onClick={() => { setActiveHarvest('rpa'); harvestRPA(); }}
+                  style={{background:'#0a1420',border:activeHarvest === 'rpa' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'16px',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
+                >
+                  <h4 style={{fontSize:'13px',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>RPA contractor reduction</h4>
+                  <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Counted only when POs/seats/contracts are reduced.</p>
+                </div>
+                {/* AI Agent Card */}
+                <div 
+                  onClick={() => { setActiveHarvest('service'); harvestService(); }}
+                  style={{background:'#0a1420',border:activeHarvest === 'service' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'16px',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
+                >
+                  <h4 style={{fontSize:'13px',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>AI Agent cost avoided</h4>
+                  <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Cost avoided from automating service tasks.</p>
+                </div>
+                {/* Record Growth Card */}
+                <div 
+                  onClick={() => { setActiveHarvest('growth'); recordSQLLift(12); }}
+                  style={{background:'#0a1420',border:activeHarvest === 'growth' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'16px',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
+                >
+                  <h4 style={{fontSize:'13px',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>Record growth</h4>
+                  <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Add qualified deals to recognize growth revenue.</p>
+                </div>
+              </div>
+
+              {/* Evidence Log Section */}
+              <div style={{padding:'24px'}}>
+                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Evidence log (realized)</h3>
+                <div style={{overflowX:'auto'}}>
+                  <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px'}}>
+                    <thead>
+                      <tr style={{borderBottom:'1px solid #1e3a5f'}}>
+                        <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Item</th>
+                        <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Days saved</th>
+                        <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>$ value</th>
+                        <th style={{textAlign:'center',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Tier</th>
+                        <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Details</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {evidence.map((e,i)=>(
+                        <tr key={i} style={{borderBottom:'1px solid #1e3a5f'}}>
+                          <td style={{padding:'12px 0',color:'#ffffff'}}>{e.taskId ? (tasks.find(x=>x.id===e.taskId)?.name || e.taskId) : (e.label || 'Item')}</td>
+                          <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>{e.daysSaved!==undefined ? e.daysSaved.toFixed(1) : '—'}</td>
+                          <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>${Math.round(e.value).toLocaleString()}</td>
+                          <td style={{textAlign:'center',padding:'12px 0'}}>
+                            <span style={{display:'inline-block',padding:'4px 8px',borderRadius:'4px',fontSize:'11px',fontWeight:'600',background:e.tier==='H'?'#10b981':e.tier==='M'?'#f59e0b':'#ef4444',color:'#ffffff'}}>{e.tier}</span>
+                          </td>
+                          <td style={{padding:'12px 0',color:'#9ca3af',fontSize:'12px'}}>{e.details}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
@@ -461,8 +474,25 @@ function closeTask(taskId: string, iso: string){
       ) : (
         // PRODUCT MANAGER VIEW
         <div style={{minHeight:'100vh',background:'#0a1420'}}>
-          {/* Header with toggle */}
-          <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'24px 32px',borderBottom:'1px solid #1e3a5f'}}>
+          {/* Top Header with Velocity AI branding and demo button */}
+          <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'40px 32px',borderBottom:'1px solid #1e3a5f'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',maxWidth:'1400px',margin:'0 auto'}}>
+              <div>
+                <h1 style={{fontSize:'36px',fontWeight:'800',color:'#ffffff',margin:'0 0 8px 0'}}>Velocity AI</h1>
+                <p style={{fontSize:'15px',color:'#9ca3af',margin:'0'}}>Turn AI into dollars</p>
+              </div>
+              <button 
+                className="btn" 
+                onClick={startTour}
+                style={{padding:'12px 28px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'16px',fontWeight:'700',cursor:'pointer',transition:'background 0.2s'}}
+              >
+                Start a guided demo
+              </button>
+            </div>
+          </div>
+
+          {/* Toggle Section */}
+          <div style={{background:'#0a1420',padding:'16px 32px',borderBottom:'1px solid #1e3a5f'}}>
             <div style={{display:'flex',justifyContent:'center',gap:'12px',alignItems:'center',maxWidth:'1400px',margin:'0 auto'}}>
               <span style={{fontSize:'13px',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
               <div 
@@ -476,38 +506,12 @@ function closeTask(taskId: string, iso: string){
           </div>
 
           <div style={{padding:'32px'}}>
-            {/* Header with Velocity AI branding */}
-            <div style={{marginBottom:'48px'}}>
-              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
-                <div>
-                  <h1 style={{fontSize:'36px',fontWeight:'800',color:'#ffffff',margin:'0 0 8px 0'}}>Velocity AI</h1>
-                  <p style={{fontSize:'15px',color:'#9ca3af',margin:'0'}}>Turn AI into dollars</p>
-                </div>
-                <button 
-                  className="btn" 
-                  onClick={startTour}
-                  style={{padding:'12px 28px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'16px',fontWeight:'700',cursor:'pointer',transition:'background 0.2s'}}
-                >
-                  Start a guided demo
-                </button>
-              </div>
-            </div>
-
-          {/* PM Dashboard Header */}
-          <DashboardHeader />
+            {/* PM Dashboard Header */}
+            <DashboardHeader />
 
           {/* Project Metrics Timeline */}
           <div style={{background:'var(--card)',padding:'16px',borderRadius:'8px',border:'1px solid #253041',marginBottom:'32px'}}>
             <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'12px'}}>This Week's Progress</h2>
-            {/* KPI color strip adapted from ProjectKPIs color scheme */}
-            <div style={{display:'flex',gap:'8px',marginBottom:'12px',alignItems:'center'}}>
-              <div style={{width:32,height:8,background:'#22c55e',borderRadius:4}} />
-              <div style={{width:32,height:8,background:'#ef4444',borderRadius:4}} />
-              <div style={{width:32,height:8,background:'#3b82f6',borderRadius:4}} />
-              <div style={{width:32,height:8,background:'#f59e0b',borderRadius:4}} />
-              <div style={{width:32,height:8,background:'#10b981',borderRadius:4}} />
-              <div style={{width:32,height:8,background:'#f59e0b',borderRadius:4}} />
-            </div>
             <ProjectTimeline />
           </div>
 
