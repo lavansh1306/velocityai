@@ -211,18 +211,45 @@ function closeTask(taskId: string, iso: string){
   }
 
   // Guided tour (Next/Back)
-  const steps: TourStep[] = [
-    { id:'kpis',  title:'1) What we measure', text:'Executive dollars: Operational (faster milestones), Cost avoided (fewer external/manual hours), and Strategic (more qualified deals + skill growth).', targetId:'kpis' },
-    { id:'gantt', title:'2) Where time appears', text:'Weekly freed time from Copilot, Asana AI, Workflows, RPA, and AI Agents (green pills). Red bars show critical‑path tasks.', targetId:'gantt' },
-    { id:'gantt', title:'3) Redeploy to priority', text:'Move 8h to “Design QA” (critical path) to accelerate the launch.', targetId:'gantt', run:()=>allocate('t1', 8) },
-    { id:'gantt', title:'4) Recognize operational value', text:'Mark it complete earlier than planned. We compute dollars only from realized days saved.', targetId:'gantt', run:()=>{
+  const executiveTourSteps: TourStep[] = [
+    { id:'header', title:'Welcome to Velocity AI', text:'Turn AI time into dollars. This dashboard measures the real business impact of AI tools across your organization—Operational gains, Cost avoided, and Strategic growth.', targetId:'header' },
+    { id:'kpis', title:'📊 The Three Dollar Types', text:'Operational (velocity): Days saved vs planned milestones × Cost of Delay. Cost avoided: RPA contractors reduced + AI tickets deflected. Strategic: More qualified deals + capability hours invested.', targetId:'kpis' },
+    { id:'roi-cards', title:'💰 Real-time ROI Metrics', text:'Your current totals across all three categories. These update as you allocate capacity, close tasks, and recognize value. Every dollar here has audit evidence below.', targetId:'kpis' },
+    { id:'gantt', title:'⚡ Where AI Time Appears', text:'Green pills show freed hours from Copilot, Asana AI, Workflows, RPA, and AI Agents. Red bars highlight critical-path tasks. Hover to see details. Gray bars = already completed.', targetId:'gantt' },
+    { id:'gantt', title:'🎯 Redeploy Strategy', text:'The power move: Move freed AI time to your most valuable work. Example: take 8h of AI-freed capacity and allocate it to "Design QA" to accelerate critical path.', targetId:'gantt', run:()=>allocate('t1', 8) },
+    { id:'gantt', title:'✅ Realize the Value', text:'When tasks finish early (before planned due), we calculate days saved × Cost of Delay. Mark "Design QA" complete 1 day earlier to see it count as Operational dollars.', targetId:'gantt', run:()=>{
       const t1 = tasks.find(t=>t.id==='t1')
       if(t1){ const earlier = new Date(t1.due); earlier.setDate(earlier.getDate()-1); closeTask('t1', earlier.toISOString()) }
     }},
-    { id:'harvest', title:'5) Count cost avoided', text:'Recognize RPA contractor reduction and AI‑answered tickets.', targetId:'harvest', run:()=>{ harvestRPA(); harvestService() } },
-    { id:'evidence', title:'6) Add growth & review proof', text:'Record “more qualified deals.” Every line has an audit trail below.', targetId:'evidence', run:()=>recordSQLLift(12) },
+    { id:'capacity-sources', title:'🔋 Pooled AI Capacity', text:'Sum of freed time across all AI sources. High-confidence items are your most reliable capacity. Allocate to tasks, then realize value as they complete.', targetId:'capacity-sources' },
+    { id:'harvest', title:'💎 Harvest Hard Savings', text:'Click these cards to log permanent reductions: RPA contractors cut, AI tickets deflected, or more qualified deals closed. Each click adds to your realized value audit trail.', targetId:'harvest' },
+    { id:'harvest', title:'🏆 RPA Contractor Reduction', text:'When you reduce contractors/licenses tied to RPA automation, log it here. System calculates: hours freed × 30% contractor ratio × $95/hour.', targetId:'harvest', run:()=>{ harvestRPA() } },
+    { id:'harvest', title:'🤖 AI Agent Cost Avoided', text:'Tickets your AI Agent deflected from human support? Log them. System: tickets × $6.50 per ticket = cost avoided. Real savings, real proof.', targetId:'harvest', run:()=>{ harvestService() } },
+    { id:'harvest', title:'📈 Record Growth', text:'More qualified deals? Skill hours invested? Click "Record growth" to add strategic revenue potential. System: deal value = $5,600/deal baseline.', targetId:'harvest', run:()=>{ recordSQLLift(12) } },
+    { id:'evidence', title:'🔍 The Audit Trail', text:'Every dollar logged has evidence. Operational from closed tasks, Cost avoided from harvest logs, Strategic from growth deals. Executives trust what they can verify.', targetId:'evidence' },
   ]
-  function startTour(){ setTourOpen(true); setTourIdx(0) }
+
+  const managerTourSteps: TourStep[] = [
+    { id:'header', title:'Welcome to Project Manager View', text:'Real-time visibility into your team\'s AI-assisted work. See which projects are getting freed capacity, and allocate it to your priorities.', targetId:'manager-header' },
+    { id:'filter', title:'🎯 Filter by Project', text:'Switch between all projects or focus on one. Each project shows its tasks, freed AI capacity, and allocation buttons.', targetId:'manager-filter' },
+    { id:'metrics', title:'📊 This Week\'s Progress', text:'Key metrics for your projects: Total work volume, early completions (velocity), efficiency gains, and team utilization. Updated in real-time.', targetId:'manager-metrics' },
+    { id:'gantt', title:'📅 Project Timeline & Status', text:'Your Gantt chart shows tasks by week. Green = on track, Yellow = near critical, Red = critical path. Allocate freed AI capacity to accelerate critical tasks.', targetId:'manager-gantt' },
+    { id:'allocate', title:'⚡ The Allocate Button', text:'Click "Allocate" on any task to reserve freed AI capacity. When you allocate, AI Suggestions on the right will show your team\'s best fit for that project.', targetId:'manager-gantt', run:()=>setSelectedProjectForSuggestions('Q4 Sales Enablement') },
+    { id:'suggestions', title:'👥 AI-Powered Team Fit', text:'Smart recommendations based on the project you selected. Shows who\'s best positioned to execute the allocated work, with skill reasoning.', targetId:'manager-suggestions' },
+    { id:'complete', title:'✅ Mark Complete', text:'When your team finishes a task (especially if early), mark it complete. The system tracks days saved and feeds it into ROI reporting.', targetId:'manager-gantt' },
+    { id:'utilization', title:'👨‍💼 Team Utilization', text:'See your team\'s capacity breakdown: allocated work, available bandwidth, and skills. Use this to balance the workload and identify risks.', targetId:'manager-utilization' },
+  ]
+
+  const steps = useMemo(() => {
+    const selectedSteps = viewMode === 'executive' ? executiveTourSteps : managerTourSteps
+    console.log('Steps updated for view:', viewMode, 'Total steps:', selectedSteps.length, 'Steps:', selectedSteps.map(s => s.title))
+    return selectedSteps
+  }, [viewMode])
+  function startTour(){ 
+    console.log('Tour started, current view:', viewMode, 'steps count:', steps?.length)
+    setTourIdx(0)
+    setTourOpen(true) 
+  }
   function nextStep(){
     const s = steps[tourIdx]; if(s?.run) s.run()
     if(tourIdx < steps.length-1) setTourIdx(tourIdx+1); else setTourOpen(false)
@@ -475,7 +502,7 @@ function closeTask(taskId: string, iso: string){
         </div>
       ) : (
         // PRODUCT MANAGER VIEW
-        <div style={{minHeight:'100vh',background:'#0a1420'}}>
+        <div style={{minHeight:'100vh',background:'#0a1420'}} id="manager-header">
           {/* Top Header with Velocity AI branding and demo button */}
           <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'40px 32px',borderBottom:'1px solid #1e3a5f'}}>
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',maxWidth:'1400px',margin:'0 auto'}}>
@@ -494,7 +521,7 @@ function closeTask(taskId: string, iso: string){
           </div>
 
           {/* Turn AI time into dollars section with toggle */}
-          <div style={{padding:'32px 32px',borderBottom:'1px solid #1e3a5f',maxWidth:'1400px',margin:'0 auto'}}>
+          <div style={{padding:'32px 32px',borderBottom:'1px solid #1e3a5f',maxWidth:'1400px',margin:'0 auto'}} id="manager-filter">
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
               <div>
                 <h2 style={{fontSize:'24px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>Turn AI time into dollars</h2>
@@ -516,7 +543,7 @@ function closeTask(taskId: string, iso: string){
 
           <div style={{padding:'32px'}}>
             {/* Project Metrics Timeline */}
-          <div style={{background:'var(--card)',padding:'16px',borderRadius:'8px',border:'1px solid #253041',marginBottom:'32px'}}>
+          <div style={{background:'var(--card)',padding:'16px',borderRadius:'8px',border:'1px solid #253041',marginBottom:'32px'}} id="manager-metrics">
             <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'12px'}}>This Week's Progress</h2>
             <ProjectTimeline />
           </div>
@@ -524,7 +551,7 @@ function closeTask(taskId: string, iso: string){
           {/* Main Grid: Gantt + AI Suggestions Sidebar */}
           <div style={{display:'grid',gridTemplateColumns:'1fr 340px',gap:'24px',marginBottom:'32px'}}>
             {/* Left: Gantt Chart */}
-            <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',overflow:'hidden'}}>
+            <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',overflow:'hidden'}} id="manager-gantt">
               <div style={{padding:'16px',borderBottom:'1px solid #253041'}}>
                 <h2 style={{fontSize:'16px',fontWeight:'700',color:'var(--text)',margin:'0'}}>Project Timeline & Status</h2>
               </div>
@@ -542,7 +569,7 @@ function closeTask(taskId: string, iso: string){
             </div>
 
             {/* Right: AI Suggestions Sidebar */}
-            <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',padding:'16px',height:'100%',position:'sticky',top:'24px'}}>
+            <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',padding:'16px',height:'100%',position:'sticky',top:'24px'}} id="manager-suggestions">
               <div style={{marginBottom:'16px'}}>
                 <h3 style={{fontSize:'16px',fontWeight:'700',color:'var(--text)',margin:'0 0 8px 0'}}></h3>
                 <p style={{fontSize:'12px',color:'var(--muted)',margin:'0'}}></p>
@@ -552,9 +579,19 @@ function closeTask(taskId: string, iso: string){
           </div>
 
           {/* Team Utilization */}
-          <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',overflow:'hidden'}}>
+          <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',overflow:'hidden'}} id="manager-utilization">
             <TeamUtilization />
           </div>
+
+          {/* Guided tour overlay */}
+          <Tour
+            open={tourOpen}
+            index={tourIdx}
+            steps={steps}
+            onNext={nextStep}
+            onPrev={prevStep}
+            onClose={()=>setTourOpen(false)}
+          />
           </div>
         </div>
       )}

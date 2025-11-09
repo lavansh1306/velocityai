@@ -93,7 +93,7 @@ export function AISuggestions({ selectedProject }: { selectedProject?: string | 
         <div>
           <h3 style={{fontSize:'16px',fontWeight:'600',color:'var(--text)',margin:'0 0 4px 0'}}>AI Suggestions</h3>
           {selectedProject ? (
-            <p style={{fontSize:'13px',color:'var(--muted)',margin:'0'}}>Smart recommendations for <strong>{selectedProject}</strong></p>
+            <p style={{fontSize:'13px',color:'var(--muted)',margin:'0'}}>Smart recommendations for {selectedProject}</p>
           ) : (
             <p style={{fontSize:'13px',color:'var(--muted)',margin:'0'}}>Smart task recommendations based on team capacity and skills</p>
           )}
