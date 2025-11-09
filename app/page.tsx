@@ -2,6 +2,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Gantt, { CapEvent, Task } from '../components/Gantt'
 import Tour, { TourStep } from '../components/Tour'
+import { DashboardHeader } from '../components/dashboard/header'
+import { ProjectTimeline } from '../components/dashboard/project-timeline'
+import { GanttChart } from '../components/dashboard/gantt-chart'
+import { AISuggestions } from '../components/dashboard/ai-suggestions'
+import { TeamUtilization } from '../components/dashboard/team-utilization'
 
 type Evidence = { taskId?: string; label?: string; daysSaved?: number; value: number; tier: 'H'|'M'|'L'; details: string }
 type Token = { minutes:number; source:string; confidence:'High'|'Medium'|'Low' }
@@ -40,6 +45,7 @@ export default function Page(){
   const [simSVC, setSimSVC] = useState(true)
   const [project, setProject] = useState<'All'|string>('All')
   const [seededOnce, setSeededOnce] = useState(false)
+  const [viewMode, setViewMode] = useState<'executive' | 'product'>('executive')
 
   // Guided tour
   const [tourOpen, setTourOpen] = useState(false)
@@ -237,138 +243,207 @@ function closeTask(taskId: string, iso: string){
 
   return (
     <div className="container">
-      <h2 className="h">Turn AI time into dollars (Exec demo)</h2>
-      <p className="small">We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
+      {viewMode === 'executive' ? (
+        // EXECUTIVE VIEW
+        <div>
+          <h2 className="h">Turn AI time into dollars (Exec demo)</h2>
+          <p className="small">We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
 
-      {/* ROI card — always shown; do not display numeric figures when total === 0 */}
-      <div className="roiWrapper">
-        <div className="roiBox">
-          <div className="roiInner">
-            <div className="roiText">ROI</div>
+          {/* View Mode Toggle */}
+          <div style={{display:'flex',justifyContent:'center',gap:'12px',marginBottom:'16px'}}>
+            <button 
+              className={`btn ${(viewMode as string) === 'executive' ? '' : 'secondary'}`}
+              onClick={() => setViewMode('executive')}
+            >
+              Executive View
+            </button>
+            <button 
+              className={`btn ${(viewMode as string) === 'product' ? '' : 'secondary'}`}
+              onClick={() => setViewMode('product')}
+            >
+              Product Manager View
+            </button>
           </div>
-        </div>
-      </div>
 
-      <div className="row" id="kpis">
-        <div className="card kpi">
-          <h3 className="h">Operational (velocity)</h3>
-          <span className="small">Tiers corresponding to $ realization</span>
-        </div>
-        <div className="card kpi">
-          <h3 className="h">Cost avoided (Saved)</h3>
-          <span className="small">Contractor/licence/time reductions tied to AI automation</span>
-        </div>
-        <div className="card kpi">
-          <h3 className="h">Strategic (growth/capability)</h3>
-          <span className="small">More qualified deals and skill hours invested</span>
-        </div>
-      </div>
+          {/* ROI card — always shown; do not display numeric figures when total === 0 */}
+          <div className="roiWrapper">
+            <div className="roiBox">
+              <div className="roiInner">
+                <div className="roiText">ROI</div>
+              </div>
+            </div>
+          </div>
 
-      <div className="row">
-        <div className="card kpi">
-          <h3 className="h">Capacity captured</h3>
-          <div><b>{capturedHrs} hrs</b></div>
-          <span className="small">Redeployed: {allocatedHrs}h • Rate: {redeployRate}% • $/freed hr: ${dollarsPerFreedHr}</span>
-        </div>
-        <div className="card kpi">
-          <h3 className="h">Quick actions</h3>
-          <button className="btn" onClick={startTour}>Start guided demo</button>
-          &nbsp;<button className="btn secondary" onClick={runDemo}>Run 30‑sec demo</button>
-        </div>
-        <div className="card kpi">
-          <h3 className="h">Project filter</h3>
+          <div className="row" id="kpis">
+            <div className="card kpi">
+              <h3 className="h">Operational (velocity)</h3>
+              <span className="small">Tiers corresponding to $ realization</span>
+            </div>
+            <div className="card kpi">
+              <h3 className="h">Cost avoided (Saved)</h3>
+              <span className="small">Contractor/licence/time reductions tied to AI automation</span>
+            </div>
+            <div className="card kpi">
+              <h3 className="h">Strategic (growth/capability)</h3>
+              <span className="small">More qualified deals and skill hours invested</span>
+            </div>
+          </div>
+
           <div className="row">
-            <button className={`btn ${project==='All'?'':'secondary'}`} onClick={()=>setProject('All')}>All</button>
-            {projects.map(p=><button key={p} className={`btn ${project===p?'':'secondary'}`} onClick={()=>setProject(p)}>{p}</button>)}
+            <div className="card kpi">
+              <h3 className="h">Capacity captured</h3>
+              <div><b>{capturedHrs} hrs</b></div>
+              <span className="small">Redeployed: {allocatedHrs}h • Rate: {redeployRate}% • $/freed hr: ${dollarsPerFreedHr}</span>
+            </div>
+            <div className="card kpi">
+              <h3 className="h">Quick actions</h3>
+              <button className="btn" onClick={startTour}>Start guided demo</button>
+              &nbsp;<button className="btn secondary" onClick={runDemo}>Run 30‑sec demo</button>
+            </div>
+            <div className="card kpi">
+              <h3 className="h">Project filter</h3>
+              <div className="row">
+                <button className={`btn ${project==='All'?'':'secondary'}`} onClick={()=>setProject('All')}>All</button>
+                {projects.map(p=><button key={p} className={`btn ${project===p?'':'secondary'}`} onClick={()=>setProject(p)}>{p}</button>)}
+              </div>
+            </div>
+          </div>
+
+          <div className="card" id="gantt">
+            <h3 className="h">Gantt — weekly freed time + critical path hotspots</h3>
+            <Gantt
+              tasks={tasksFiltered}
+              capacity={capFiltered}
+              onAllocate={allocate}
+              onComplete={closeTask}
+              projects={projects}
+              currentProject={project}
+              onProjectChange={(p) => setProject(p)}
+            />
+          </div>
+
+          <div className="card">
+            <h3 className="h">Simulation toggles</h3>
+            <label className="switch"><input type="checkbox" checked={simRPA} onChange={e=>setSimRPA(e.target.checked)}/> RPA back‑office automation</label>
+            <label className="switch"><input type="checkbox" checked={simSVC} onChange={e=>setSimSVC(e.target.checked)}/> AI Agent resolves routine questions</label>
+            <span className="small"> Toggling changes capacity sources and harvestable savings.</span>
+          </div>
+
+          <div className="card">
+            <h3 className="h">Capacity sources (summary)</h3>
+            <table className="table">
+              <thead><tr><th>AI tool → Outcome</th><th>Hours</th><th>Value ($)</th></tr></thead>
+              <tbody>
+                {groupedSources.map((s,i)=>{
+                  const hrs = toIntHrs(s.minutes)
+                  return (
+                    <tr key={i}>
+                      <td>{s.source}</td>
+                      <td>{hrs}</td>
+                      <td>${(hrs*HOURLY_VALUE).toLocaleString()}</td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="card" id="harvest">
+            <h3 className="h">Harvest / Strategic actions</h3>
+            <div className="row">
+              <div className="card kpi">
+                <h4 className="h">RPA contractor reduction</h4>
+                <button className="btn" onClick={harvestRPA}>Recognize hard savings</button>
+                <p className="small">Counted only when POs/seats/contracts are reduced.</p>
+              </div>
+              <div className="card kpi">
+                <h4 className="h">AI Agent cost avoided</h4>
+                <button className="btn" onClick={harvestService}>Recognize cost avoided</button>
+              </div>
+              <div className="card kpi">
+                <h4 className="h">Record growth</h4>
+                <button className="btn" onClick={()=>recordSQLLift(12)}>Add qualified deals → $</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="card" id="evidence">
+            <h3 className="h">Evidence log (realized)</h3>
+            <table className="table">
+              <thead><tr><th>Item</th><th>Days saved</th><th>$ value</th><th>Tier</th><th>Details</th></tr></thead>
+              <tbody>
+                {evidence.map((e,i)=>(
+                  <tr key={i}>
+                    <td>{e.taskId ? (tasks.find(x=>x.id===e.taskId)?.name || e.taskId) : (e.label || 'Item')}</td>
+                    <td>{e.daysSaved!==undefined ? e.daysSaved.toFixed(1) : '—'}</td>
+                    <td>${Math.round(e.value).toLocaleString()}</td>
+                    <td><span className={`badge ${e.tier==='H'?'green': e.tier==='M'?'amber':'red'}`}>{e.tier}</span></td>
+                    <td className="small">{e.details}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Guided tour overlay */}
+          <Tour
+            open={tourOpen}
+            index={tourIdx}
+            steps={steps}
+            onNext={nextStep}
+            onPrev={prevStep}
+            onClose={()=>setTourOpen(false)}
+          />
+        </div>
+      ) : (
+        // PRODUCT MANAGER VIEW
+        <div style={{display:'grid',gridTemplateColumns:'1fr 380px',gap:'32px',marginTop:'32px'}}>
+          {/* Main content area */}
+          <div style={{display:'flex',flexDirection:'column',gap:'32px'}}>
+            {/* View Mode Toggle */}
+            <div style={{display:'flex',justifyContent:'center',gap:'12px',marginBottom:'0'}}>
+              <button 
+                style={{padding:'8px 16px',background:((viewMode as string) === 'executive' ? 'var(--blue)' : '#1f2937'),border:'none',borderRadius:'6px',color:'#fff',cursor:'pointer',fontSize:'13px',fontWeight:'500'}}
+                onClick={() => setViewMode('executive')}
+              >
+                Executive View
+              </button>
+              <button 
+                style={{padding:'8px 16px',background:((viewMode as string) === 'product' ? 'var(--blue)' : '#1f2937'),border:'none',borderRadius:'6px',color:'#fff',cursor:'pointer',fontSize:'13px',fontWeight:'500'}}
+                onClick={() => setViewMode('product')}
+              >
+                Product Manager View
+              </button>
+            </div>
+
+            {/* PM Dashboard Header */}
+            <DashboardHeader />
+
+            {/* Project Metrics Timeline */}
+            <div>
+              <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'16px'}}>AI-Optimized Project Timeline</h2>
+              <p style={{fontSize:'13px',color:'var(--muted)',marginBottom:'16px'}}>Track impact metrics, dependencies, and time savings achieved through WorkX Agent insights.</p>
+              <ProjectTimeline />
+            </div>
+
+            {/* Gantt Chart */}
+            <div>
+              <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'16px'}}>Gantt — weekly freed time + critical path hotspots</h2>
+              <GanttChart />
+            </div>
+
+            {/* Team Utilization */}
+            <TeamUtilization />
+          </div>
+
+          {/* Sidebar - AI Suggestions */}
+          <div style={{position:'sticky',top:'24px',height:'fit-content'}}>
+            <div style={{background:'var(--card)',border:'1px solid #253041',borderRadius:'8px',padding:'16px'}}>
+              <AISuggestions />
+            </div>
           </div>
         </div>
-      </div>
-
-      <div className="card" id="gantt">
-        <h3 className="h">Gantt — weekly freed time + critical path hotspots</h3>
-        <Gantt
-          tasks={tasksFiltered}
-          capacity={capFiltered}
-          onAllocate={allocate}
-          onComplete={closeTask}
-          projects={projects}
-          currentProject={project}
-          onProjectChange={(p) => setProject(p)}
-        />
-      </div>
-
-      <div className="card">
-        <h3 className="h">Simulation toggles</h3>
-        <label className="switch"><input type="checkbox" checked={simRPA} onChange={e=>setSimRPA(e.target.checked)}/> RPA back‑office automation</label>
-        <label className="switch"><input type="checkbox" checked={simSVC} onChange={e=>setSimSVC(e.target.checked)}/> AI Agent resolves routine questions</label>
-        <span className="small"> Toggling changes capacity sources and harvestable savings.</span>
-      </div>
-
-      <div className="card">
-        <h3 className="h">Capacity sources (summary)</h3>
-        <table className="table">
-          <thead><tr><th>AI tool → Outcome</th><th>Hours</th><th>Value ($)</th></tr></thead>
-          <tbody>
-            {groupedSources.map((s,i)=>{
-              const hrs = toIntHrs(s.minutes)
-              return (
-                <tr key={i}>
-                  <td>{s.source}</td>
-                  <td>{hrs}</td>
-                  <td>${(hrs*HOURLY_VALUE).toLocaleString()}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="card" id="harvest">
-        <h3 className="h">Harvest / Strategic actions</h3>
-        <div className="row">
-          <div className="card kpi">
-            <h4 className="h">RPA contractor reduction</h4>
-            <button className="btn" onClick={harvestRPA}>Recognize hard savings</button>
-            <p className="small">Counted only when POs/seats/contracts are reduced.</p>
-          </div>
-          <div className="card kpi">
-            <h4 className="h">AI Agent cost avoided</h4>
-            <button className="btn" onClick={harvestService}>Recognize cost avoided</button>
-          </div>
-          <div className="card kpi">
-            <h4 className="h">Record growth</h4>
-            <button className="btn" onClick={()=>recordSQLLift(12)}>Add qualified deals → $</button>
-          </div>
-        </div>
-      </div>
-
-      <div className="card" id="evidence">
-        <h3 className="h">Evidence log (realized)</h3>
-        <table className="table">
-          <thead><tr><th>Item</th><th>Days saved</th><th>$ value</th><th>Tier</th><th>Details</th></tr></thead>
-          <tbody>
-            {evidence.map((e,i)=>(
-              <tr key={i}>
-                <td>{e.taskId ? (tasks.find(x=>x.id===e.taskId)?.name || e.taskId) : (e.label || 'Item')}</td>
-                <td>{e.daysSaved!==undefined ? e.daysSaved.toFixed(1) : '—'}</td>
-                <td>${Math.round(e.value).toLocaleString()}</td>
-                <td><span className={`badge ${e.tier==='H'?'green': e.tier==='M'?'amber':'red'}`}>{e.tier}</span></td>
-                <td className="small">{e.details}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Guided tour overlay */}
-      <Tour
-        open={tourOpen}
-        index={tourIdx}
-        steps={steps}
-        onNext={nextStep}
-        onPrev={prevStep}
-        onClose={()=>setTourOpen(false)}
-      />
+      )}
     </div>
   )
 }
