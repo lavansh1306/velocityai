@@ -46,6 +46,7 @@ export default function Page(){
   const [project, setProject] = useState<'All'|string>('All')
   const [seededOnce, setSeededOnce] = useState(false)
   const [viewMode, setViewMode] = useState<'executive' | 'product'>('executive')
+  const [activeHarvest, setActiveHarvest] = useState<'rpa' | 'service' | 'growth'>('rpa')
 
   // Guided tour
   const [tourOpen, setTourOpen] = useState(false)
@@ -384,16 +385,28 @@ function closeTask(taskId: string, iso: string){
           <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}} id="harvest">
             <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 24px 0'}}>Harvest / Strategic actions</h3>
             <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))',gap:'24px'}}>
-              <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+              {/* RPA Card */}
+              <div 
+                onClick={() => setActiveHarvest('rpa')}
+                style={{background:'#0f1b2d',border:activeHarvest === 'rpa' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'24px',cursor:'pointer',transition:'all 0.2s'}}
+              >
                 <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>RPA contractor reduction</h4>
                 <button className="btn" onClick={harvestRPA} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Recognize hard savings</button>
                 <p style={{fontSize:'12px',color:'#9ca3af',margin:'0'}}>Counted only when POs/seats/contracts are reduced.</p>
               </div>
-              <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+              {/* AI Agent Card */}
+              <div 
+                onClick={() => setActiveHarvest('service')}
+                style={{background:'#0f1b2d',border:activeHarvest === 'service' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'24px',cursor:'pointer',transition:'all 0.2s'}}
+              >
                 <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>AI Agent cost avoided</h4>
                 <button className="btn" onClick={harvestService} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Recognize cost avoided</button>
               </div>
-              <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+              {/* Record Growth Card */}
+              <div 
+                onClick={() => setActiveHarvest('growth')}
+                style={{background:'#0f1b2d',border:activeHarvest === 'growth' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'24px',cursor:'pointer',transition:'all 0.2s'}}
+              >
                 <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Record growth</h4>
                 <button className="btn" onClick={()=>recordSQLLift(12)} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Add qualified deals → $</button>
               </div>
