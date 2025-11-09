@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Gantt, { CapEvent, Task } from '../components/Gantt'
 import Tour, { TourStep } from '../components/Tour'
 
-type Evidence = { taskId?: string; label?: string; daysSaved?: number; value: number; tier: 'A'|'B'|'C'; details: string }
+type Evidence = { taskId?: string; label?: string; daysSaved?: number; value: number; tier: 'H'|'M'|'L'; details: string }
 type Token = { minutes:number; source:string; confidence:'High'|'Medium'|'Low' }
 
 function d(offset:number){ const dt=new Date(); dt.setDate(dt.getDate()+offset); return dt.toISOString() }
@@ -114,13 +114,13 @@ function closeTask(taskId: string, iso: string){
     const actualDur = Math.max(1, daysBetweenISO(t.start, iso))        // start→actual close
     const daysSaved = Math.max(0, schedDur - actualDur)                // if iso < due → positive
     const value     = daysSaved * t.codPerDay
-    const tier: 'A'|'B'|'C' = (t.slackDays <= 0 && daysSaved > 0) ? 'B' : 'C'
+  const tier: 'H'|'M'|'L' = (t.slackDays <= 0 && daysSaved > 0) ? 'M' : 'L'
 
     // 2) Optional capability credit (from allocated minutes)
     if (t.capability && t.allocatedMinutes) {
       const capHrs = t.allocatedMinutes / 60
       setEvidence(ev => [
-        { label: 'Capability growth', value: capHrs * 120, tier: 'C', details: `${capHrs.toFixed(1)}h x $120/h (proxy)` },
+        { label: 'Capability growth', value: capHrs * 120, tier: 'L', details: `${capHrs.toFixed(1)}h x $120/h (proxy)` },
         ...ev
       ])
     }
@@ -148,7 +148,7 @@ function closeTask(taskId: string, iso: string){
     const contractorHours = hours * 0.3
     const dollars = contractorHours * 95
     setEvidence(ev=>[
-      { label:'RPA contractor reduction', value:dollars, tier:'A', details: `Reduced contractors by ${Math.round(contractorHours)}h @ $95/h.` },
+      { label:'RPA contractor reduction', value:dollars, tier:'H', details: `Reduced contractors by ${Math.round(contractorHours)}h @ $95/h.` },
       ...ev
     ])
   }
@@ -158,13 +158,13 @@ function closeTask(taskId: string, iso: string){
     const tickets = Math.round(svc.minutes / STC.serviceMinPerTicket)
     const dollars = tickets * 6.5
     setEvidence(ev=>[
-      { label:'AI Agent cost avoided', value:dollars, tier:'A', details: `${tickets} deflected x $6.5/ticket.` },
+      { label:'AI Agent cost avoided', value:dollars, tier:'H', details: `${tickets} deflected x $6.5/ticket.` },
       ...ev
     ])
   }
   function recordSQLLift(n=12){
     setEvidence(ev=>[
-      { label:'More qualified deals (strategic)', value:n*5600, tier:'C', details: `${n} deals x $5,600 value/deal.` },
+      { label:'More qualified deals (strategic)', value:n*5600, tier:'L', details: `${n} deals x $5,600 value/deal.` },
       ...ev
     ])
   }
@@ -217,7 +217,7 @@ function closeTask(taskId: string, iso: string){
   const total = opValue + costAvoided + strategic
   const dollarsPerFreedHr = capturedHrs>0 ? Math.round(total/capturedHrs) : 0
 
-  const tierSum = (t:'A'|'B'|'C') => evidence.filter(e=>e.tier===t).reduce((a,b)=>a+b.value,0)
+  const tierSum = (t:'H'|'M'|'L') => evidence.filter(e=>e.tier===t).reduce((a,b)=>a+b.value,0)
 
   // Project filter
   const projects = Array.from(new Set(tasks.map(t=>t.project)))
@@ -345,7 +345,7 @@ function closeTask(taskId: string, iso: string){
                 <td>{e.taskId ? (tasks.find(x=>x.id===e.taskId)?.name || e.taskId) : (e.label || 'Item')}</td>
                 <td>{e.daysSaved!==undefined ? e.daysSaved.toFixed(1) : '—'}</td>
                 <td>${Math.round(e.value).toLocaleString()}</td>
-                <td><span className={`badge ${e.tier==='A'?'green': e.tier==='B'?'amber':'red'}`}>{e.tier}</span></td>
+                <td><span className={`badge ${e.tier==='H'?'green': e.tier==='M'?'amber':'red'}`}>{e.tier}</span></td>
                 <td className="small">{e.details}</td>
               </tr>
             ))}
