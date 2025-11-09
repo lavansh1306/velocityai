@@ -241,20 +241,26 @@ function closeTask(taskId: string, iso: string){
       <h2 className="h">Turn AI time into dollars (Exec demo)</h2>
       <p className="small">We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
 
+      {/* ROI card — always shown; do not display numeric figures when total === 0 */}
+      <div className="roiWrapper">
+        <div className="roiBox">
+          <div className="roiInner">
+            <div className="roiText">ROI</div>
+          </div>
+        </div>
+      </div>
+
       <div className="row" id="kpis">
         <div className="card kpi">
           <h3 className="h">Operational (velocity)</h3>
-          <div><b>${Math.round(opValue).toLocaleString()}</b></div>
           <span className="small">Tiers corresponding to $ realization</span>
         </div>
         <div className="card kpi">
           <h3 className="h">Cost avoided (Saved)</h3>
-          <div><b>${Math.round(costAvoided).toLocaleString()}</b></div>
           <span className="small">Contractor/licence/time reductions tied to AI automation</span>
         </div>
         <div className="card kpi">
           <h3 className="h">Strategic (growth/capability)</h3>
-          <div><b>${Math.round(strategic).toLocaleString()}</b></div>
           <span className="small">More qualified deals and skill hours invested</span>
         </div>
       </div>
