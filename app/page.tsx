@@ -309,31 +309,6 @@ function closeTask(taskId: string, iso: string){
             </div>
           </div>
 
-          {/* Capacity, Actions, and Filters section */}
-          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto',display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))',gap:'24px'}}>
-            {/* Capacity Captured Card */}
-            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
-              <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Capacity captured</h3>
-              <div style={{fontSize:'32px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>{capturedHrs} hrs</div>
-              <p style={{fontSize:'12px',color:'#9ca3af',margin:'0'}}>Redeployed: {allocatedHrs}h • Rate: {redeployRate}% • $/freed hr: ${dollarsPerFreedHr}</p>
-            </div>
-            {/* Quick Actions Card */}
-            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
-              <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Quick actions</h3>
-              <div style={{display:'flex',gap:'8px',flexDirection:'column'}}>
-                <button className="btn" onClick={runDemo} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%'}}>Run 30‑sec demo</button>
-              </div>
-            </div>
-            {/* Project Filter Card */}
-            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
-              <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Project filter</h3>
-              <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
-                <button style={{padding:'6px 12px',background:project==='All'?'#2563eb':'#1e3a5f',color:'#ffffff',border:'none',borderRadius:'6px',fontSize:'12px',fontWeight:'500',cursor:'pointer'}} onClick={()=>setProject('All')}>All</button>
-                {projects.map(p=><button key={p} style={{padding:'6px 12px',background:project===p?'#2563eb':'#1e3a5f',color:'#ffffff',border:'none',borderRadius:'6px',fontSize:'12px',fontWeight:'500',cursor:'pointer'}} onClick={()=>setProject(p)}>{p}</button>)}
-              </div>
-            </div>
-          </div>
-
           {/* Gantt Chart Section */}
           <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}}>
             <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}} id="gantt">
