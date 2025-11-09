@@ -137,6 +137,34 @@ hr{border-color:#1f2937;margin:16px 0}
 /* Dependency arrows */
 .depsSvg{position:absolute;top:0;left:0;pointer-events:none}
 
+/* Gantt top header (title + filters) */
+.ganttTop{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #253041}
+.ganttTitle{font-size:18px;font-weight:700}
+.projectFilters{display:flex;gap:8px;align-items:center}
+.filterBtn{background:#0f1720;border:1px solid #253041;color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer;font-size:13px}
+.filterBtn.active{background:var(--blue);color:#fff;border-color:transparent}
+
+/* Add styles for the time filter dropdown */
+.filterDropdown {
+  background-color: #1e293b; /* Dark background matching the theme */
+  color: #e2e8f0; /* Light text color */
+  border: 1px solid #334155; /* Border matching the theme */
+  border-radius: 4px; /* Rounded corners */
+  padding: 6px 12px; /* Padding for better spacing */
+  font-size: 14px; /* Font size matching the theme */
+  cursor: pointer; /* Pointer cursor for better UX */
+}
+
+.filterDropdown:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 2px #3b82f6; /* Add a blue focus ring */
+}
+
+.filterDropdown option {
+  background-color: #1e293b; /* Match dropdown background */
+  color: #e2e8f0; /* Match text color */
+}
+
 /* Ensure tables and grids shrink on small screens */
 @media (max-width: 768px) {
 	.table th,.table td{font-size:12px}

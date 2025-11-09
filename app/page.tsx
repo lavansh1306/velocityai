@@ -5,7 +5,6 @@ import Tour, { TourStep } from '../components/Tour'
 
 type Evidence = { taskId?: string; label?: string; daysSaved?: number; value: number; tier: 'H'|'M'|'L'; details: string }
 type Token = { minutes:number; source:string; confidence:'High'|'Medium'|'Low' }
-
 function d(offset:number){ const dt=new Date(); dt.setDate(dt.getDate()+offset); return dt.toISOString() }
 function daysBetweenISO(a:string,b:string){ return Math.max(1, Math.round((new Date(b).getTime()-new Date(a).getTime())/86400000)) }
 const toIntHrs = (m:number)=> Math.round(m/60)
@@ -287,7 +286,15 @@ function closeTask(taskId: string, iso: string){
 
       <div className="card" id="gantt">
         <h3 className="h">Gantt — weekly freed time + critical path hotspots</h3>
-        <Gantt tasks={tasksFiltered} capacity={capFiltered} onAllocate={allocate} onComplete={closeTask}/>
+        <Gantt
+          tasks={tasksFiltered}
+          capacity={capFiltered}
+          onAllocate={allocate}
+          onComplete={closeTask}
+          projects={projects}
+          currentProject={project}
+          onProjectChange={(p) => setProject(p)}
+        />
       </div>
 
       <div className="card">

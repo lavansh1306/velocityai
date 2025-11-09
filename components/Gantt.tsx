@@ -42,6 +42,9 @@ type Props = {
   onAllocate: (taskId: string, hours: number) => void
   onComplete: (taskId: string, actualCloseISO: string) => void
   onView?: (taskId: string) => void
+  projects?: string[]
+  currentProject?: 'All' | string
+  onProjectChange?: (p: 'All' | string) => void
 }
 
 // Hydration‑safe date formatting (fixed locale + UTC)
@@ -49,7 +52,7 @@ const dtf = new Intl.DateTimeFormat('en-US', { month:'short', day:'numeric', tim
 const fmt = (d: Date) => dtf.format(d)
 const daysBetween = (a: Date, b: Date) => Math.max(1, Math.round((b.getTime() - a.getTime()) / 86400000))
 
-export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView }: Props) {
+export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView, projects, currentProject, onProjectChange }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const [gridW, setGridW] = useState<number | null>(null) // null until measured (avoid hydration warnings)
 
@@ -155,6 +158,42 @@ export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView 
   // Render
   return (
     <div className="gantt" ref={wrapRef}>
+      {/* Top header: title + project filters */}
+      <div className="ganttTop" style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'12px 16px',borderBottom:'1px solid #253041'}}>
+        <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
+          <span className="small" style={{marginRight:'4px'}}>Project filters:</span>
+          <div className="projectFilters">
+            {(['All', ...(projects ?? [])] as Array<'All'|string>).map(p => {
+              const active = currentProject === p
+              return (
+                <button
+                  key={p}
+                  className={`filterBtn ${active ? 'active' : ''}`}
+                  onClick={() => onProjectChange?.(p)}
+                >
+                  {p}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
+          <span className="small">Time filters</span>
+          <select
+            className="filterDropdown"
+            onChange={(e) => {
+              const selectedValue = e.target.value;
+              // Add logic to filter tasks based on the selected time range
+              console.log('Selected time filter:', selectedValue);
+            }}
+          >
+            <option value="none">No filters</option>
+            {Array.from({ length: spanWeeks }, (_, i) => (
+              <option key={i} value={`Week ${i + 1}`}>Week {i + 1}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       {/* Legend */}
       <div className="legend">
         <div className="legendItem"><div className="legendColor red"></div> Critical (slack = 0)</div>
