@@ -45,6 +45,7 @@ type Props = {
   projects?: string[]
   currentProject?: 'All' | string
   onProjectChange?: (p: 'All' | string) => void
+  showAllocateButton?: boolean
 }
 
 // Hydration‑safe date formatting (fixed locale + UTC)
@@ -52,7 +53,7 @@ const dtf = new Intl.DateTimeFormat('en-US', { month:'short', day:'numeric', tim
 const fmt = (d: Date) => dtf.format(d)
 const daysBetween = (a: Date, b: Date) => Math.max(1, Math.round((b.getTime() - a.getTime()) / 86400000))
 
-export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView, projects, currentProject, onProjectChange }: Props) {
+export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView, projects, currentProject, onProjectChange, showAllocateButton = false }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const [gridW, setGridW] = useState<number | null>(null) // null until measured (avoid hydration warnings)
 
@@ -299,19 +300,19 @@ export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView,
               })}
 
               <div className="actionCell">
-                {/* Place the Allocate button inside the row's action box area so it visually sits within the rounded cell */}
-                <div className="actionBox" style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <button
-                    className="btn"
-                    style={{ minWidth: 140, padding: '10px 18px' }}
-                    onClick={() => onAllocate(r.id, 8)}
-                  >
-                    Allocate
-                  </button>
-                </div>
-                {onView && (
-                  <div style={{ display: 'flex', alignItems: 'center', marginLeft: 8 }}>
-                    <button className="btn ghost" onClick={() => onView(r.id)}>View</button>
+                {showAllocateButton ? (
+                  <div className="actionBox" style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <button
+                      className="btn"
+                      style={{ minWidth: 140, padding: '10px 18px' }}
+                      onClick={() => onAllocate(r.id, 8)}
+                    >
+                      Allocate
+                    </button>
+                  </div>
+                ) : (
+                  <div style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                    <span className="small">{r.project}</span>
                   </div>
                 )}
               </div>

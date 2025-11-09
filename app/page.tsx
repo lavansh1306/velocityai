@@ -245,144 +245,219 @@ function closeTask(taskId: string, iso: string){
     <div className="container">
       {viewMode === 'executive' ? (
         // EXECUTIVE VIEW
-        <div>
-          <h2 className="h">Turn AI time into dollars (Exec demo)</h2>
-          <p className="small">We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
-
-          {/* View Mode Toggle */}
-          <div style={{display:'flex',justifyContent:'center',gap:'12px',marginBottom:'16px'}}>
-            <button 
-              className={`btn ${(viewMode as string) === 'executive' ? '' : 'secondary'}`}
-              onClick={() => setViewMode('executive')}
-            >
-              Executive View
-            </button>
-            <button 
-              className={`btn ${(viewMode as string) === 'product' ? '' : 'secondary'}`}
-              onClick={() => setViewMode('product')}
-            >
-              Product Manager View
-            </button>
+        <div style={{minHeight:'100vh',background:'#0a1420'}}>
+          {/* Header with Velocity AI branding and demo button */}
+          <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'40px 32px',borderBottom:'1px solid #1e3a5f'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',maxWidth:'1400px',margin:'0 auto'}}>
+              <div>
+                <h1 style={{fontSize:'36px',fontWeight:'800',color:'#ffffff',margin:'0 0 8px 0'}}>Velocity AI</h1>
+                <p style={{fontSize:'15px',color:'#9ca3af',margin:'0'}}>Turn AI into dollars</p>
+              </div>
+              <button 
+                className="btn" 
+                onClick={startTour}
+                style={{padding:'12px 28px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'16px',fontWeight:'700',cursor:'pointer',transition:'background 0.2s'}}
+              >
+                Start a guided demo
+              </button>
+            </div>
           </div>
 
-          {/* ROI card — always shown; do not display numeric figures when total === 0 */}
-          <div className="roiWrapper">
-            <div className="roiBox">
-              <div className="roiInner">
-                <div className="roiText">ROI</div>
+          {/* Turn AI time into dollars section with toggle */}
+          <div style={{padding:'32px 32px',borderBottom:'1px solid #1e3a5f',maxWidth:'1400px',margin:'0 auto'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <div>
+                <h2 style={{fontSize:'24px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>Turn AI time into dollars</h2>
+                <p style={{fontSize:'14px',color:'#9ca3af',margin:'0',maxWidth:'700px',lineHeight:'1.6'}}>We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
+              </div>
+              {/* View Mode Toggle */}
+              <div style={{display:'flex',gap:'12px',alignItems:'center',flexShrink:0,marginLeft:'32px'}}>
+                <span style={{fontSize:'13px',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
+                <div 
+                  style={{width:'48px',height:'24px',background:'#2563eb',borderRadius:'12px',position:'relative',cursor:'pointer',display:'flex',alignItems:'center',padding:'2px',transition:'all 0.3s ease'}}
+                  onClick={() => setViewMode((viewMode as string) === 'executive' ? 'product' : 'executive')}
+                >
+                  <div style={{width:'20px',height:'20px',background:'#ffffff',borderRadius:'10px',position:'absolute',left:(viewMode as string) === 'executive' ? '2px' : '26px',transition:'left 0.3s ease'}} />
+                </div>
+                <span style={{fontSize:'13px',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
               </div>
             </div>
           </div>
 
-          <div className="row" id="kpis">
-            <div className="card kpi">
-              <h3 className="h">Operational (velocity)</h3>
-              <span className="small">Tiers corresponding to $ realization</span>
-            </div>
-            <div className="card kpi">
-              <h3 className="h">Cost avoided (Saved)</h3>
-              <span className="small">Contractor/licence/time reductions tied to AI automation</span>
-            </div>
-            <div className="card kpi">
-              <h3 className="h">Strategic (growth/capability)</h3>
-              <span className="small">More qualified deals and skill hours invested</span>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="card kpi">
-              <h3 className="h">Capacity captured</h3>
-              <div><b>{capturedHrs} hrs</b></div>
-              <span className="small">Redeployed: {allocatedHrs}h • Rate: {redeployRate}% • $/freed hr: ${dollarsPerFreedHr}</span>
-            </div>
-            <div className="card kpi">
-              <h3 className="h">Quick actions</h3>
-              <button className="btn" onClick={startTour}>Start guided demo</button>
-              &nbsp;<button className="btn secondary" onClick={runDemo}>Run 30‑sec demo</button>
-            </div>
-            <div className="card kpi">
-              <h3 className="h">Project filter</h3>
-              <div className="row">
-                <button className={`btn ${project==='All'?'':'secondary'}`} onClick={()=>setProject('All')}>All</button>
-                {projects.map(p=><button key={p} className={`btn ${project===p?'':'secondary'}`} onClick={()=>setProject(p)}>{p}</button>)}
+          {/* ROI Summary with gradient container and three cards */}
+          <div style={{padding:'48px 32px',maxWidth:'1400px',margin:'0 auto'}}>
+            <h2 style={{fontSize:'24px',fontWeight:'700',color:'#ffffff',margin:'0 0 32px 0'}}>ROI Summary</h2>
+            <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',border:'1px solid #1e3a5f',borderRadius:'16px',padding:'40px',display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))',gap:'40px'}} id="kpis">
+              {/* Operational Card */}
+              <div style={{display:'flex',flexDirection:'column'}}>
+                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Operational (velocity)</h3>
+                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>$40,000</div>
+                <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Tiers corresponding to $ realization</p>
+              </div>
+              {/* Cost Avoided Card */}
+              <div style={{display:'flex',flexDirection:'column'}}>
+                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Cost avoided (Saved)</h3>
+                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>800 hours</div>
+                <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Contractor/licence/time reductions tied to AI automation</p>
+              </div>
+              {/* Strategic Card */}
+              <div style={{display:'flex',flexDirection:'column'}}>
+                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Strategic (growth/capability)</h3>
+                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>200 hours</div>
+                <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>More qualified deals and skill hours invested</p>
               </div>
             </div>
           </div>
 
-          <div className="card" id="gantt">
-            <h3 className="h">Gantt — weekly freed time + critical path hotspots</h3>
-            <Gantt
-              tasks={tasksFiltered}
-              capacity={capFiltered}
-              onAllocate={allocate}
-              onComplete={closeTask}
-              projects={projects}
-              currentProject={project}
-              onProjectChange={(p) => setProject(p)}
-            />
+          {/* Capacity, Actions, and Filters section */}
+          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto',display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))',gap:'24px'}}>
+            {/* Capacity Captured Card */}
+            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+              <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Capacity captured</h3>
+              <div style={{fontSize:'32px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>{capturedHrs} hrs</div>
+              <p style={{fontSize:'12px',color:'#9ca3af',margin:'0'}}>Redeployed: {allocatedHrs}h • Rate: {redeployRate}% • $/freed hr: ${dollarsPerFreedHr}</p>
+            </div>
+            {/* Quick Actions Card */}
+            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+              <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Quick actions</h3>
+              <div style={{display:'flex',gap:'8px',flexDirection:'column'}}>
+                <button className="btn" onClick={runDemo} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%'}}>Run 30‑sec demo</button>
+              </div>
+            </div>
+            {/* Project Filter Card */}
+            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+              <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Project filter</h3>
+              <div style={{display:'flex',gap:'6px',flexWrap:'wrap'}}>
+                <button style={{padding:'6px 12px',background:project==='All'?'#2563eb':'#1e3a5f',color:'#ffffff',border:'none',borderRadius:'6px',fontSize:'12px',fontWeight:'500',cursor:'pointer'}} onClick={()=>setProject('All')}>All</button>
+                {projects.map(p=><button key={p} style={{padding:'6px 12px',background:project===p?'#2563eb':'#1e3a5f',color:'#ffffff',border:'none',borderRadius:'6px',fontSize:'12px',fontWeight:'500',cursor:'pointer'}} onClick={()=>setProject(p)}>{p}</button>)}
+              </div>
+            </div>
           </div>
 
-          <div className="card">
-            <h3 className="h">Simulation toggles</h3>
-            <label className="switch"><input type="checkbox" checked={simRPA} onChange={e=>setSimRPA(e.target.checked)}/> RPA back‑office automation</label>
-            <label className="switch"><input type="checkbox" checked={simSVC} onChange={e=>setSimSVC(e.target.checked)}/> AI Agent resolves routine questions</label>
-            <span className="small"> Toggling changes capacity sources and harvestable savings.</span>
+          {/* Gantt Chart Section */}
+          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}}>
+            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}} id="gantt">
+              <div style={{padding:'24px',borderBottom:'1px solid #1e3a5f'}}>
+                <h2 style={{fontSize:'16px',fontWeight:'700',color:'#ffffff',margin:'0'}}>Gantt — weekly freed time + critical path hotspots</h2>
+              </div>
+              <div style={{padding:'24px'}}>
+                <Gantt
+                  tasks={tasksFiltered}
+                  capacity={capFiltered}
+                  onAllocate={allocate}
+                  onComplete={closeTask}
+                  projects={projects}
+                  currentProject={project}
+                  onProjectChange={(p) => setProject(p)}
+                  showAllocateButton={false}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="card">
-            <h3 className="h">Capacity sources (summary)</h3>
-            <table className="table">
-              <thead><tr><th>AI tool → Outcome</th><th>Hours</th><th>Value ($)</th></tr></thead>
-              <tbody>
-                {groupedSources.map((s,i)=>{
-                  const hrs = toIntHrs(s.minutes)
-                  return (
-                    <tr key={i}>
-                      <td>{s.source}</td>
-                      <td>{hrs}</td>
-                      <td>${(hrs*HOURLY_VALUE).toLocaleString()}</td>
+          {/* Simulation Toggles Section */}
+          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}}>
+            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+              <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Simulation toggles</h3>
+              <div style={{display:'flex',flexDirection:'column',gap:'12px'}}>
+                <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'14px',color:'#9ca3af'}}>
+                  <input type="checkbox" checked={simRPA} onChange={e=>setSimRPA(e.target.checked)} style={{width:'16px',height:'16px',cursor:'pointer'}}/>
+                  RPA back‑office automation
+                </label>
+                <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'14px',color:'#9ca3af'}}>
+                  <input type="checkbox" checked={simSVC} onChange={e=>setSimSVC(e.target.checked)} style={{width:'16px',height:'16px',cursor:'pointer'}}/>
+                  AI Agent resolves routine questions
+                </label>
+              </div>
+              <p style={{fontSize:'12px',color:'#9ca3af',margin:'12px 0 0 0'}}>Toggling changes capacity sources and harvestable savings.</p>
+            </div>
+          </div>
+
+          {/* Capacity Sources Section */}
+          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}}>
+            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}}>
+              <div style={{padding:'24px',borderBottom:'1px solid #1e3a5f'}}>
+                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0'}}>Capacity sources (summary)</h3>
+              </div>
+              <div style={{padding:'24px',overflowX:'auto'}}>
+                <table style={{width:'100%',borderCollapse:'collapse',fontSize:'14px'}}>
+                  <thead>
+                    <tr style={{borderBottom:'1px solid #1e3a5f'}}>
+                      <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>AI tool → Outcome</th>
+                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Hours</th>
+                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Value ($)</th>
                     </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="card" id="harvest">
-            <h3 className="h">Harvest / Strategic actions</h3>
-            <div className="row">
-              <div className="card kpi">
-                <h4 className="h">RPA contractor reduction</h4>
-                <button className="btn" onClick={harvestRPA}>Recognize hard savings</button>
-                <p className="small">Counted only when POs/seats/contracts are reduced.</p>
-              </div>
-              <div className="card kpi">
-                <h4 className="h">AI Agent cost avoided</h4>
-                <button className="btn" onClick={harvestService}>Recognize cost avoided</button>
-              </div>
-              <div className="card kpi">
-                <h4 className="h">Record growth</h4>
-                <button className="btn" onClick={()=>recordSQLLift(12)}>Add qualified deals → $</button>
+                  </thead>
+                  <tbody>
+                    {groupedSources.map((s,i)=>{
+                      const hrs = toIntHrs(s.minutes)
+                      return (
+                        <tr key={i} style={{borderBottom:'1px solid #1e3a5f'}}>
+                          <td style={{padding:'12px 0',color:'#ffffff'}}>{s.source}</td>
+                          <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>{hrs}</td>
+                          <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>${(hrs*HOURLY_VALUE).toLocaleString()}</td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
 
-          <div className="card" id="evidence">
-            <h3 className="h">Evidence log (realized)</h3>
-            <table className="table">
-              <thead><tr><th>Item</th><th>Days saved</th><th>$ value</th><th>Tier</th><th>Details</th></tr></thead>
-              <tbody>
-                {evidence.map((e,i)=>(
-                  <tr key={i}>
-                    <td>{e.taskId ? (tasks.find(x=>x.id===e.taskId)?.name || e.taskId) : (e.label || 'Item')}</td>
-                    <td>{e.daysSaved!==undefined ? e.daysSaved.toFixed(1) : '—'}</td>
-                    <td>${Math.round(e.value).toLocaleString()}</td>
-                    <td><span className={`badge ${e.tier==='H'?'green': e.tier==='M'?'amber':'red'}`}>{e.tier}</span></td>
-                    <td className="small">{e.details}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          {/* Harvest / Strategic Actions Section */}
+          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}} id="harvest">
+            <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 24px 0'}}>Harvest / Strategic actions</h3>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))',gap:'24px'}}>
+              <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+                <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>RPA contractor reduction</h4>
+                <button className="btn" onClick={harvestRPA} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Recognize hard savings</button>
+                <p style={{fontSize:'12px',color:'#9ca3af',margin:'0'}}>Counted only when POs/seats/contracts are reduced.</p>
+              </div>
+              <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+                <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>AI Agent cost avoided</h4>
+                <button className="btn" onClick={harvestService} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Recognize cost avoided</button>
+              </div>
+              <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',padding:'24px'}}>
+                <h4 style={{fontSize:'14px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Record growth</h4>
+                <button className="btn" onClick={()=>recordSQLLift(12)} style={{padding:'10px 16px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'14px',fontWeight:'600',cursor:'pointer',width:'100%',marginBottom:'12px'}}>Add qualified deals → $</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Evidence Log Section */}
+          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}} id="evidence">
+            <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}}>
+              <div style={{padding:'24px',borderBottom:'1px solid #1e3a5f'}}>
+                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0'}}>Evidence log (realized)</h3>
+              </div>
+              <div style={{padding:'24px',overflowX:'auto'}}>
+                <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px'}}>
+                  <thead>
+                    <tr style={{borderBottom:'1px solid #1e3a5f'}}>
+                      <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Item</th>
+                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Days saved</th>
+                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>$ value</th>
+                      <th style={{textAlign:'center',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Tier</th>
+                      <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {evidence.map((e,i)=>(
+                      <tr key={i} style={{borderBottom:'1px solid #1e3a5f'}}>
+                        <td style={{padding:'12px 0',color:'#ffffff'}}>{e.taskId ? (tasks.find(x=>x.id===e.taskId)?.name || e.taskId) : (e.label || 'Item')}</td>
+                        <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>{e.daysSaved!==undefined ? e.daysSaved.toFixed(1) : '—'}</td>
+                        <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>${Math.round(e.value).toLocaleString()}</td>
+                        <td style={{textAlign:'center',padding:'12px 0'}}>
+                          <span style={{display:'inline-block',padding:'4px 8px',borderRadius:'4px',fontSize:'11px',fontWeight:'600',background:e.tier==='H'?'#10b981':e.tier==='M'?'#f59e0b':'#ef4444',color:'#ffffff'}}>{e.tier}</span>
+                        </td>
+                        <td style={{padding:'12px 0',color:'#9ca3af',fontSize:'12px'}}>{e.details}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           {/* Guided tour overlay */}
@@ -397,29 +472,39 @@ function closeTask(taskId: string, iso: string){
         </div>
       ) : (
         // PRODUCT MANAGER VIEW
-        <div>
-          {/* View Mode Toggle */}
-          <div style={{display:'flex',justifyContent:'center',gap:'12px',marginBottom:'32px'}}>
-            <button 
-              style={{padding:'8px 16px',background:((viewMode as string) === 'executive' ? 'var(--blue)' : '#1f2937'),border:'none',borderRadius:'6px',color:'#fff',cursor:'pointer',fontSize:'13px',fontWeight:'500'}}
-              onClick={() => setViewMode('executive')}
-            >
-              Executive View
-            </button>
-            <button 
-              style={{padding:'8px 16px',background:((viewMode as string) === 'product' ? 'var(--blue)' : '#1f2937'),border:'none',borderRadius:'6px',color:'#fff',cursor:'pointer',fontSize:'13px',fontWeight:'500'}}
-              onClick={() => setViewMode('product')}
-            >
-              Product Manager View
-            </button>
+        <div style={{minHeight:'100vh',background:'#0a1420'}}>
+          {/* Header with toggle */}
+          <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'24px 32px',borderBottom:'1px solid #1e3a5f'}}>
+            <div style={{display:'flex',justifyContent:'center',gap:'12px',alignItems:'center',maxWidth:'1400px',margin:'0 auto'}}>
+              <span style={{fontSize:'13px',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
+              <div 
+                style={{width:'48px',height:'24px',background:'#2563eb',borderRadius:'12px',position:'relative',cursor:'pointer',display:'flex',alignItems:'center',padding:'2px',transition:'all 0.3s ease'}}
+                onClick={() => setViewMode((viewMode as string) === 'executive' ? 'product' : 'executive')}
+              >
+                <div style={{width:'20px',height:'20px',background:'#ffffff',borderRadius:'10px',position:'absolute',left:(viewMode as string) === 'executive' ? '2px' : '26px',transition:'left 0.3s ease'}} />
+              </div>
+              <span style={{fontSize:'13px',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
+            </div>
           </div>
+
+          <div style={{padding:'32px'}}>
+
 
           {/* PM Dashboard Header */}
           <DashboardHeader />
 
           {/* Project Metrics Timeline */}
           <div style={{background:'var(--card)',padding:'16px',borderRadius:'8px',border:'1px solid #253041',marginBottom:'32px'}}>
-            <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'16px'}}>This Week's Progress</h2>
+            <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'12px'}}>This Week's Progress</h2>
+            {/* KPI color strip adapted from ProjectKPIs color scheme */}
+            <div style={{display:'flex',gap:'8px',marginBottom:'12px',alignItems:'center'}}>
+              <div style={{width:32,height:8,background:'#22c55e',borderRadius:4}} />
+              <div style={{width:32,height:8,background:'#ef4444',borderRadius:4}} />
+              <div style={{width:32,height:8,background:'#3b82f6',borderRadius:4}} />
+              <div style={{width:32,height:8,background:'#f59e0b',borderRadius:4}} />
+              <div style={{width:32,height:8,background:'#10b981',borderRadius:4}} />
+              <div style={{width:32,height:8,background:'#f59e0b',borderRadius:4}} />
+            </div>
             <ProjectTimeline />
           </div>
 
@@ -438,6 +523,7 @@ function closeTask(taskId: string, iso: string){
                 projects={projects}
                 currentProject={project}
                 onProjectChange={(p) => setProject(p)}
+                showAllocateButton={true}
               />
             </div>
 
@@ -454,6 +540,7 @@ function closeTask(taskId: string, iso: string){
           {/* Team Utilization */}
           <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',overflow:'hidden'}}>
             <TeamUtilization />
+          </div>
           </div>
         </div>
       )}
