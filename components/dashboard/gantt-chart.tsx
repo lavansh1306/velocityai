@@ -37,8 +37,8 @@ type Row = Task & {
 }
 
 type Props = {
-  tasks?: Task[]
-  capacity?: CapEvent[]
+  tasks: Task[] | undefined
+  capacity: CapEvent[]
   onAllocate?: (taskId: string, hours: number) => void
   onComplete?: (taskId: string, actualCloseISO: string) => void
   onView?: (taskId: string) => void
@@ -46,6 +46,7 @@ type Props = {
   currentProject?: 'All' | string
   onProjectChange?: (p: 'All' | string) => void
   showAllocateButton?: boolean
+  onAllocateClick?: (taskId: string, projectName: string) => void
 }
 
 // Hydration‑safe date formatting (fixed locale + UTC)
@@ -53,7 +54,7 @@ const dtf = new Intl.DateTimeFormat('en-US', { month:'short', day:'numeric', tim
 const fmt = (d: Date) => dtf.format(d)
 const daysBetween = (a: Date, b: Date) => Math.max(1, Math.round((b.getTime() - a.getTime()) / 86400000))
 
-export function GanttChart({ tasks: initialTasks, capacity: initialCapacity, onAllocate, onComplete, onView, projects, currentProject, onProjectChange, showAllocateButton = false }: Props) {
+export function GanttChart({ tasks: initialTasks, capacity: initialCapacity, onAllocate, onComplete, onView, projects, currentProject, onProjectChange, showAllocateButton = false, onAllocateClick }: Props) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const [gridW, setGridW] = useState<number | null>(null)
 
@@ -292,7 +293,7 @@ export function GanttChart({ tasks: initialTasks, capacity: initialCapacity, onA
                     <button
                       className="btn"
                       style={{ minWidth: 140, padding: '10px 18px' }}
-                      onClick={() => onAllocate?.(r.id, 8)}
+                      onClick={() => onAllocateClick?.(r.id, r.project)}
                     >
                       Allocate
                     </button>

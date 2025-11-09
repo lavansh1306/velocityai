@@ -2,7 +2,58 @@
 
 import { useState } from "react"
 
-const suggestions = [
+const suggestionsByProject: Record<string, any[]> = {
+  'Q4 Sales Enablement': [
+    {
+      id: 1,
+      employee: "Arjun Patel",
+      recommendation: "Reassign UI Revamp",
+      reason: "Subtask #15 to Arjun",
+      initials: "AP",
+    },
+    {
+      id: 2,
+      employee: "James Wilson",
+      recommendation: "Assign Sales Strategy",
+      reason: "Task to James",
+      initials: "JW",
+    },
+  ],
+  'Q4 Campaign Email Sprint': [
+    {
+      id: 3,
+      employee: "Sarah Chen",
+      recommendation: "Copy Review & Optimization",
+      reason: "Email copy refinement task",
+      initials: "SC",
+    },
+    {
+      id: 4,
+      employee: "Michael Brown",
+      recommendation: "Design System Integration",
+      reason: "Template design task",
+      initials: "MB",
+    },
+  ],
+  'Website Refresh': [
+    {
+      id: 5,
+      employee: "Emma Davis",
+      recommendation: "SEO Optimization",
+      reason: "Website SEO audit task",
+      initials: "ED",
+    },
+    {
+      id: 6,
+      employee: "Alex Kumar",
+      recommendation: "Performance Testing",
+      reason: "Site performance review",
+      initials: "AK",
+    },
+  ],
+}
+
+const defaultSuggestions = [
   {
     id: 1,
     employee: "Arjun Patel",
@@ -19,8 +70,12 @@ const suggestions = [
   },
 ]
 
-export function AISuggestions() {
+export function AISuggestions({ selectedProject }: { selectedProject?: string | null }) {
   const [accepted, setAccepted] = useState<number[]>([])
+
+  const suggestions = selectedProject && suggestionsByProject[selectedProject] 
+    ? suggestionsByProject[selectedProject] 
+    : defaultSuggestions
 
   const handleAccept = (id: number) => {
     if (!accepted.includes(id)) {
@@ -37,7 +92,11 @@ export function AISuggestions() {
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'12px'}}>
         <div>
           <h3 style={{fontSize:'16px',fontWeight:'600',color:'var(--text)',margin:'0 0 4px 0'}}>AI Suggestions</h3>
-          <p style={{fontSize:'13px',color:'var(--muted)',margin:'0'}}>Smart task recommendations based on team capacity and skills</p>
+          {selectedProject ? (
+            <p style={{fontSize:'13px',color:'var(--muted)',margin:'0'}}>Smart recommendations for <strong>{selectedProject}</strong></p>
+          ) : (
+            <p style={{fontSize:'13px',color:'var(--muted)',margin:'0'}}>Smart task recommendations based on team capacity and skills</p>
+          )}
         </div>
       </div>
       {suggestions.map((suggestion) => (

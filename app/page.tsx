@@ -51,6 +51,7 @@ export default function Page(){
   const [seededOnce, setSeededOnce] = useState(false)
   const [viewMode, setViewMode] = useState<'executive' | 'product'>('executive')
   const [activeHarvest, setActiveHarvest] = useState<'rpa' | 'service' | 'growth'>('rpa')
+  const [selectedProjectForSuggestions, setSelectedProjectForSuggestions] = useState<string | null>(null)
 
   // Guided tour
   const [tourOpen, setTourOpen] = useState(false)
@@ -343,6 +344,7 @@ function closeTask(taskId: string, iso: string){
                   currentProject={project}
                   onProjectChange={(p) => setProject(p)}
                   showAllocateButton={false}
+                  onAllocateClick={(taskId, projectName) => setSelectedProjectForSuggestions(projectName)}
                 />
               </div>
             </div>
@@ -491,25 +493,29 @@ function closeTask(taskId: string, iso: string){
             </div>
           </div>
 
-          {/* Toggle Section */}
-          <div style={{background:'#0a1420',padding:'16px 32px',borderBottom:'1px solid #1e3a5f'}}>
-            <div style={{display:'flex',justifyContent:'center',gap:'12px',alignItems:'center',maxWidth:'1400px',margin:'0 auto'}}>
-              <span style={{fontSize:'13px',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
-              <div 
-                style={{width:'48px',height:'24px',background:'#2563eb',borderRadius:'12px',position:'relative',cursor:'pointer',display:'flex',alignItems:'center',padding:'2px',transition:'all 0.3s ease'}}
-                onClick={() => setViewMode((viewMode as string) === 'executive' ? 'product' : 'executive')}
-              >
-                <div style={{width:'20px',height:'20px',background:'#ffffff',borderRadius:'10px',position:'absolute',left:(viewMode as string) === 'executive' ? '2px' : '26px',transition:'left 0.3s ease'}} />
+          {/* Turn AI time into dollars section with toggle */}
+          <div style={{padding:'32px 32px',borderBottom:'1px solid #1e3a5f',maxWidth:'1400px',margin:'0 auto'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+              <div>
+                <h2 style={{fontSize:'24px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>Turn AI time into dollars</h2>
+                <p style={{fontSize:'14px',color:'#9ca3af',margin:'0',maxWidth:'700px',lineHeight:'1.6'}}>We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
               </div>
-              <span style={{fontSize:'13px',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
+              {/* View Mode Toggle */}
+              <div style={{display:'flex',gap:'12px',alignItems:'center',flexShrink:0,marginLeft:'32px'}}>
+                <span style={{fontSize:'13px',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
+                <div 
+                  style={{width:'48px',height:'24px',background:'#2563eb',borderRadius:'12px',position:'relative',cursor:'pointer',display:'flex',alignItems:'center',padding:'2px',transition:'all 0.3s ease'}}
+                  onClick={() => setViewMode((viewMode as string) === 'executive' ? 'product' : 'executive')}
+                >
+                  <div style={{width:'20px',height:'20px',background:'#ffffff',borderRadius:'10px',position:'absolute',left:(viewMode as string) === 'executive' ? '2px' : '26px',transition:'left 0.3s ease'}} />
+                </div>
+                <span style={{fontSize:'13px',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
+              </div>
             </div>
           </div>
 
           <div style={{padding:'32px'}}>
-            {/* PM Dashboard Header */}
-            <DashboardHeader />
-
-          {/* Project Metrics Timeline */}
+            {/* Project Metrics Timeline */}
           <div style={{background:'var(--card)',padding:'16px',borderRadius:'8px',border:'1px solid #253041',marginBottom:'32px'}}>
             <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'12px'}}>This Week's Progress</h2>
             <ProjectTimeline />
@@ -531,16 +537,17 @@ function closeTask(taskId: string, iso: string){
                 currentProject={project}
                 onProjectChange={(p) => setProject(p)}
                 showAllocateButton={true}
+                onAllocateClick={(taskId, projectName) => setSelectedProjectForSuggestions(projectName)}
               />
             </div>
 
             {/* Right: AI Suggestions Sidebar */}
-            <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',padding:'16px',height:'fit-content',position:'sticky',top:'24px'}}>
+            <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',padding:'16px',height:'100%',position:'sticky',top:'24px'}}>
               <div style={{marginBottom:'16px'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'700',color:'var(--text)',margin:'0 0 8px 0'}}>AI Suggestions</h3>
-                <p style={{fontSize:'12px',color:'var(--muted)',margin:'0'}}>Smart recommendations based on capacity</p>
+                <h3 style={{fontSize:'16px',fontWeight:'700',color:'var(--text)',margin:'0 0 8px 0'}}></h3>
+                <p style={{fontSize:'12px',color:'var(--muted)',margin:'0'}}></p>
               </div>
-              <AISuggestions />
+              <AISuggestions selectedProject={selectedProjectForSuggestions} />
             </div>
           </div>
 
