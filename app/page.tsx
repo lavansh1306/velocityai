@@ -245,10 +245,10 @@ function closeTask(taskId: string, iso: string){
         <div className="card kpi">
           <h3 className="h">Operational (velocity)</h3>
           <div><b>${Math.round(opValue).toLocaleString()}</b></div>
-          <span className="small">Realized days saved on critical milestones • Tier A ${Math.round(tierSum('A')).toLocaleString()} • B ${Math.round(tierSum('B')).toLocaleString()} • C ${Math.round(tierSum('C')).toLocaleString()}</span>
+          <span className="small">Tiers corresponding to $ realization</span>
         </div>
         <div className="card kpi">
-          <h3 className="h">Cost avoided (harvested)</h3>
+          <h3 className="h">Cost avoided (Saved)</h3>
           <div><b>${Math.round(costAvoided).toLocaleString()}</b></div>
           <span className="small">Contractor/licence/time reductions tied to AI automation</span>
         </div>
@@ -294,14 +294,13 @@ function closeTask(taskId: string, iso: string){
       <div className="card">
         <h3 className="h">Capacity sources (summary)</h3>
         <table className="table">
-          <thead><tr><th>AI tool → Outcome</th><th>Confidence</th><th>Hours</th><th>Value ($)</th></tr></thead>
+          <thead><tr><th>AI tool → Outcome</th><th>Hours</th><th>Value ($)</th></tr></thead>
           <tbody>
             {groupedSources.map((s,i)=>{
               const hrs = toIntHrs(s.minutes)
               return (
                 <tr key={i}>
                   <td>{s.source}</td>
-                  <td><span className={`badge ${s.confidence==='High'?'green':'amber'}`}>{s.confidence}</span></td>
                   <td>{hrs}</td>
                   <td>${(hrs*HOURLY_VALUE).toLocaleString()}</td>
                 </tr>

@@ -260,17 +260,21 @@ export default function Gantt({ tasks, capacity, onAllocate, onComplete, onView 
               })}
 
               <div className="actionCell">
-                <input className="input" style={{ width: 80 }} type="number" min={1} defaultValue={8} id={`alloc-${r.id}`} />
-                <button className="btn" onClick={() => {
-                  const el = document.getElementById(`alloc-${r.id}`) as HTMLInputElement | null
-                  const v = (el?.valueAsNumber ?? 0) || 4
-                  onAllocate(r.id, v)
-                }}>Allocate</button>
-                <button className="btn secondary" onClick={() => {
-                  const val = prompt('Actual close date (YYYY-MM-DD):', new Date().toISOString().slice(0, 10))
-                  if (val) onComplete(r.id, new Date(val).toISOString())
-                }}>Mark complete</button>
-                {onView && <button className="btn ghost" onClick={() => onView(r.id)}>View</button>}
+                {/* Place the Allocate button inside the row's action box area so it visually sits within the rounded cell */}
+                <div className="actionBox" style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <button
+                    className="btn"
+                    style={{ minWidth: 140, padding: '10px 18px' }}
+                    onClick={() => onAllocate(r.id, 8)}
+                  >
+                    Allocate
+                  </button>
+                </div>
+                {onView && (
+                  <div style={{ display: 'flex', alignItems: 'center', marginLeft: 8 }}>
+                    <button className="btn ghost" onClick={() => onView(r.id)}>View</button>
+                  </div>
+                )}
               </div>
             </div>
           )

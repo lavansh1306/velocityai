@@ -55,6 +55,33 @@ export default function Tour({ open, index, steps, onNext, onPrev, onClose }: Pr
         </div>
       </div>
       <style jsx global>{`
+        /* Keep existing theme/colours — only set positioning so styles from globals.css remain in effect */
+        .tourOverlay{
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+        }
+
+        /* Anchor the tour card to the right side. On narrow screens fall back to bottom center. */
+        .tourCard{
+          position: fixed;
+          right: 28px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 10000;
+        }
+
+        /* Small screens: place card at bottom center */
+        @media (max-width: 640px) {
+          .tourCard{
+            right: 50%;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            bottom: 20px;
+            top: auto;
+          }
+        }
+
         .tour-highlight{
           outline: 2px solid #3b82f6 !important;
           box-shadow: 0 0 0 6px rgba(59,130,246,.35) !important;
