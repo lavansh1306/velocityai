@@ -463,7 +463,22 @@ function closeTask(taskId: string, iso: string){
           </div>
 
           <div style={{padding:'32px'}}>
-
+            {/* Header with Velocity AI branding */}
+            <div style={{marginBottom:'48px'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+                <div>
+                  <h1 style={{fontSize:'36px',fontWeight:'800',color:'#ffffff',margin:'0 0 8px 0'}}>Velocity AI</h1>
+                  <p style={{fontSize:'15px',color:'#9ca3af',margin:'0'}}>Turn AI into dollars</p>
+                </div>
+                <button 
+                  className="btn" 
+                  onClick={startTour}
+                  style={{padding:'12px 28px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'16px',fontWeight:'700',cursor:'pointer',transition:'background 0.2s'}}
+                >
+                  Start a guided demo
+                </button>
+              </div>
+            </div>
 
           {/* PM Dashboard Header */}
           <DashboardHeader />
