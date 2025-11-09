@@ -293,16 +293,16 @@ function closeTask(taskId: string, iso: string){
         // EXECUTIVE VIEW
         <div style={{minHeight:'100vh',background:'#0a1420'}}>
           {/* Header with Velocity AI branding and demo button */}
-          <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'40px 32px',borderBottom:'1px solid #1e3a5f'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',maxWidth:'1400px',margin:'0 auto'}}>
+          <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'clamp(20px, 5vw, 40px) clamp(16px, 5vw, 32px)',borderBottom:'1px solid #1e3a5f'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',maxWidth:'1400px',margin:'0 auto',flexWrap:'wrap',gap:'16px'}}>
               <div>
-                <h1 style={{fontSize:'36px',fontWeight:'800',color:'#ffffff',margin:'0 0 8px 0'}}>Velocity AI</h1>
-                <p style={{fontSize:'15px',color:'#9ca3af',margin:'0'}}>Turn AI into dollars</p>
+                <h1 style={{fontSize:'clamp(24px, 6vw, 36px)',fontWeight:'800',color:'#ffffff',margin:'0 0 8px 0'}}>Velocity AI</h1>
+                <p style={{fontSize:'clamp(12px, 3vw, 15px)',color:'#9ca3af',margin:'0'}}>Turn AI into dollars</p>
               </div>
               <button 
                 className="btn" 
                 onClick={startTour}
-                style={{padding:'12px 28px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'16px',fontWeight:'700',cursor:'pointer',transition:'background 0.2s'}}
+                style={{padding:'12px 28px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'clamp(14px, 2vw, 16px)',fontWeight:'700',cursor:'pointer',transition:'background 0.2s',whiteSpace:'nowrap'}}
               >
                 Start a guided demo
               </button>
@@ -310,58 +310,58 @@ function closeTask(taskId: string, iso: string){
           </div>
 
           {/* Turn AI time into dollars section with toggle */}
-          <div style={{padding:'32px 32px',borderBottom:'1px solid #1e3a5f',maxWidth:'1400px',margin:'0 auto'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+          <div style={{padding:'clamp(20px, 5vw, 32px) clamp(16px, 5vw, 32px)',borderBottom:'1px solid #1e3a5f',maxWidth:'1400px',margin:'0 auto'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexDirection:'column',gap:'24px'}}>
               <div>
-                <h2 style={{fontSize:'24px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>Turn AI time into dollars</h2>
-                <p style={{fontSize:'14px',color:'#9ca3af',margin:'0',maxWidth:'700px',lineHeight:'1.6'}}>We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
+                <h2 style={{fontSize:'clamp(18px, 5vw, 24px)',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>Turn AI time into dollars</h2>
+                <p style={{fontSize:'clamp(12px, 2.5vw, 14px)',color:'#9ca3af',margin:'0',maxWidth:'700px',lineHeight:'1.6'}}>We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
               </div>
               {/* View Mode Toggle */}
-              <div style={{display:'flex',gap:'12px',alignItems:'center',flexShrink:0,marginLeft:'32px'}}>
-                <span style={{fontSize:'13px',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
+              <div style={{display:'flex',gap:'12px',alignItems:'center',flexWrap:'wrap'}}>
+                <span style={{fontSize:'clamp(11px, 2vw, 13px)',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
                 <div 
-                  style={{width:'48px',height:'24px',background:'#2563eb',borderRadius:'12px',position:'relative',cursor:'pointer',display:'flex',alignItems:'center',padding:'2px',transition:'all 0.3s ease'}}
+                  style={{width:'48px',height:'24px',background:'#2563eb',borderRadius:'12px',position:'relative',cursor:'pointer',display:'flex',alignItems:'center',padding:'2px',transition:'all 0.3s ease',flexShrink:0}}
                   onClick={() => setViewMode((viewMode as string) === 'executive' ? 'product' : 'executive')}
                 >
                   <div style={{width:'20px',height:'20px',background:'#ffffff',borderRadius:'10px',position:'absolute',left:(viewMode as string) === 'executive' ? '2px' : '26px',transition:'left 0.3s ease'}} />
                 </div>
-                <span style={{fontSize:'13px',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
+                <span style={{fontSize:'clamp(11px, 2vw, 13px)',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
               </div>
             </div>
           </div>
 
           {/* ROI Summary with gradient container and three cards */}
-          <div style={{padding:'48px 32px',maxWidth:'1400px',margin:'0 auto'}}>
-            <h2 style={{fontSize:'24px',fontWeight:'700',color:'#ffffff',margin:'0 0 32px 0'}}>ROI Summary</h2>
-            <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',border:'1px solid #1e3a5f',borderRadius:'16px',padding:'40px',display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(300px, 1fr))',gap:'40px'}} id="kpis">
+          <div style={{padding:'clamp(32px, 5vw, 48px) clamp(16px, 5vw, 32px)',maxWidth:'1400px',margin:'0 auto'}}>
+            <h2 style={{fontSize:'clamp(18px, 5vw, 24px)',fontWeight:'700',color:'#ffffff',margin:'0 0 clamp(16px, 3vw, 32px) 0'}}>ROI Summary</h2>
+            <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',border:'1px solid #1e3a5f',borderRadius:'16px',padding:'clamp(24px, 4vw, 40px)',display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(clamp(250px, 100%, 1fr), 1fr))',gap:'clamp(20px, 4vw, 40px)'}} id="kpis">
               {/* Operational Card */}
               <div style={{display:'flex',flexDirection:'column'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Operational (velocity)</h3>
-                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>$40,000</div>
-                <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Tiers corresponding to $ realization</p>
+                <h3 style={{fontSize:'clamp(14px, 2.5vw, 16px)',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Operational (velocity)</h3>
+                <div style={{fontSize:'clamp(28px, 7vw, 40px)',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>$40,000</div>
+                <p style={{fontSize:'clamp(11px, 2vw, 13px)',color:'#9ca3af',margin:'0'}}>Tiers corresponding to $ realization</p>
               </div>
               {/* Cost Avoided Card */}
               <div style={{display:'flex',flexDirection:'column'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Cost avoided (Saved)</h3>
-                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>800 hours</div>
-                <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Contractor/licence/time reductions tied to AI automation</p>
+                <h3 style={{fontSize:'clamp(14px, 2.5vw, 16px)',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Cost avoided (Saved)</h3>
+                <div style={{fontSize:'clamp(28px, 7vw, 40px)',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>800 hours</div>
+                <p style={{fontSize:'clamp(11px, 2vw, 13px)',color:'#9ca3af',margin:'0'}}>Contractor/licence/time reductions tied to AI automation</p>
               </div>
               {/* Strategic Card */}
               <div style={{display:'flex',flexDirection:'column'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Strategic (growth/capability)</h3>
-                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>200 hours</div>
-                <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>More qualified deals and skill hours invested</p>
+                <h3 style={{fontSize:'clamp(14px, 2.5vw, 16px)',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Strategic (growth/capability)</h3>
+                <div style={{fontSize:'clamp(28px, 7vw, 40px)',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>200 hours</div>
+                <p style={{fontSize:'clamp(11px, 2vw, 13px)',color:'#9ca3af',margin:'0'}}>More qualified deals and skill hours invested</p>
               </div>
             </div>
           </div>
 
           {/* Gantt Chart Section */}
-          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}}>
+          <div style={{padding:'clamp(16px, 4vw, 32px)',maxWidth:'1400px',margin:'0 auto'}}>
             <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}} id="gantt">
-              <div style={{padding:'24px',borderBottom:'1px solid #1e3a5f'}}>
-                <h2 style={{fontSize:'16px',fontWeight:'700',color:'#ffffff',margin:'0'}}>Gantt — weekly freed time + critical path hotspots</h2>
+              <div style={{padding:'clamp(16px, 3vw, 24px)',borderBottom:'1px solid #1e3a5f'}}>
+                <h2 style={{fontSize:'clamp(14px, 3vw, 16px)',fontWeight:'700',color:'#ffffff',margin:'0'}}>Gantt — weekly freed time + critical path hotspots</h2>
               </div>
-              <div style={{padding:'24px'}}>
+              <div style={{padding:'clamp(12px, 3vw, 24px)',overflowX:'auto'}}>
                 <Gantt
                   tasks={tasksFiltered}
                   capacity={capFiltered}
@@ -378,30 +378,30 @@ function closeTask(taskId: string, iso: string){
           </div>
 
           {/* Capacity Sources Section */}
-          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}}>
+          <div style={{padding:'clamp(16px, 4vw, 32px)',maxWidth:'1400px',margin:'0 auto'}}>
             <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}}>
-              <div style={{padding:'24px',borderBottom:'1px solid #1e3a5f'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Capacity sources (summary)</h3>
+              <div style={{padding:'clamp(16px, 3vw, 24px)',borderBottom:'1px solid #1e3a5f'}}>
+                <h3 style={{fontSize:'clamp(14px, 3vw, 16px)',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Capacity sources (summary)</h3>
                 {/* Inline simulation toggles */}
-                <div style={{display:'flex',gap:'24px',alignItems:'center',flexWrap:'wrap'}}>
-                  <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'14px',color:'#9ca3af'}}>
+                <div style={{display:'flex',gap:'clamp(12px, 3vw, 24px)',alignItems:'center',flexWrap:'wrap'}}>
+                  <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'clamp(12px, 2vw, 14px)',color:'#9ca3af'}}>
                     <input type="checkbox" checked={simRPA} onChange={e=>setSimRPA(e.target.checked)} style={{width:'16px',height:'16px',cursor:'pointer',accentColor:'#2563eb'}}/>
                     RPA back‑office automation
                   </label>
-                  <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'14px',color:'#9ca3af'}}>
+                  <label style={{display:'flex',alignItems:'center',gap:'8px',cursor:'pointer',fontSize:'clamp(12px, 2vw, 14px)',color:'#9ca3af'}}>
                     <input type="checkbox" checked={simSVC} onChange={e=>setSimSVC(e.target.checked)} style={{width:'16px',height:'16px',cursor:'pointer',accentColor:'#2563eb'}}/>
                     AI Agent resolves routine questions
                   </label>
                 </div>
-                <p style={{fontSize:'12px',color:'#9ca3af',margin:'12px 0 0 0'}}>Toggling changes capacity sources and harvestable savings.</p>
+                <p style={{fontSize:'clamp(11px, 1.5vw, 12px)',color:'#9ca3af',margin:'12px 0 0 0'}}>Toggling changes capacity sources and harvestable savings.</p>
               </div>
-              <div style={{padding:'24px',overflowX:'auto'}}>
-                <table style={{width:'100%',borderCollapse:'collapse',fontSize:'14px'}}>
+              <div style={{padding:'clamp(12px, 3vw, 24px)',overflowX:'auto'}}>
+                <table style={{width:'100%',borderCollapse:'collapse',fontSize:'clamp(12px, 2vw, 14px)'}}>
                   <thead>
                     <tr style={{borderBottom:'1px solid #1e3a5f'}}>
-                      <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>AI tool → Outcome</th>
-                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Hours</th>
-                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Value ($)</th>
+                      <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'clamp(10px, 1.5vw, 12px)'}}>AI tool → Outcome</th>
+                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'clamp(10px, 1.5vw, 12px)'}}>Hours</th>
+                      <th style={{textAlign:'right',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'clamp(10px, 1.5vw, 12px)'}}>Value ($)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -409,9 +409,9 @@ function closeTask(taskId: string, iso: string){
                       const hrs = toIntHrs(s.minutes)
                       return (
                         <tr key={i} style={{borderBottom:'1px solid #1e3a5f'}}>
-                          <td style={{padding:'12px 0',color:'#ffffff'}}>{s.source}</td>
-                          <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>{hrs}</td>
-                          <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff'}}>${(hrs*HOURLY_VALUE).toLocaleString()}</td>
+                          <td style={{padding:'12px 0',color:'#ffffff',fontSize:'clamp(11px, 1.5vw, 13px)'}}>{s.source}</td>
+                          <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff',fontSize:'clamp(11px, 1.5vw, 13px)'}}>{hrs}</td>
+                          <td style={{textAlign:'right',padding:'12px 0',color:'#ffffff',fontSize:'clamp(11px, 1.5vw, 13px)'}}>${(hrs*HOURLY_VALUE).toLocaleString()}</td>
                         </tr>
                       )
                     })}
@@ -422,46 +422,46 @@ function closeTask(taskId: string, iso: string){
           </div>
 
           {/* Harvest / Strategic Actions + Evidence Log Section (Combined) */}
-          <div style={{padding:'32px',maxWidth:'1400px',margin:'0 auto'}} id="harvest">
+          <div style={{padding:'clamp(16px, 4vw, 32px)',maxWidth:'1400px',margin:'0 auto'}} id="harvest">
             <div style={{background:'#0f1b2d',border:'1px solid #1e3a5f',borderRadius:'12px',overflow:'hidden'}}>
               {/* Header */}
-              <div style={{padding:'24px',borderBottom:'1px solid #1e3a5f'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0'}}>Harvest / Strategic actions</h3>
+              <div style={{padding:'clamp(16px, 3vw, 24px)',borderBottom:'1px solid #1e3a5f'}}>
+                <h3 style={{fontSize:'clamp(14px, 3vw, 16px)',fontWeight:'600',color:'#ffffff',margin:'0'}}>Harvest / Strategic actions</h3>
               </div>
               
               {/* Harvest Cards */}
-              <div style={{padding:'20px',borderBottom:'1px solid #1e3a5f',display:'grid',gridTemplateColumns:'repeat(3, 1fr)',gap:'16px'}}>
+              <div style={{padding:'clamp(12px, 3vw, 20px)',borderBottom:'1px solid #1e3a5f',display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(clamp(200px, 100%, 1fr), 1fr))',gap:'clamp(12px, 2vw, 16px)'}}>
                 {/* RPA Card */}
                 <div 
                   onClick={() => { setActiveHarvest('rpa'); harvestRPA(); }}
-                  style={{background:'#0a1420',border:activeHarvest === 'rpa' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'16px',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
+                  style={{background:'#0a1420',border:activeHarvest === 'rpa' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'clamp(12px, 2vw, 16px)',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
                 >
-                  <h4 style={{fontSize:'13px',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>RPA contractor reduction</h4>
-                  <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Counted only when POs/seats/contracts are reduced.</p>
+                  <h4 style={{fontSize:'clamp(12px, 2vw, 13px)',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>RPA contractor reduction</h4>
+                  <p style={{fontSize:'clamp(11px, 1.5vw, 13px)',color:'#9ca3af',margin:'0'}}>Counted only when POs/seats/contracts are reduced.</p>
                 </div>
                 {/* AI Agent Card */}
                 <div 
                   onClick={() => { setActiveHarvest('service'); harvestService(); }}
-                  style={{background:'#0a1420',border:activeHarvest === 'service' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'16px',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
+                  style={{background:'#0a1420',border:activeHarvest === 'service' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'clamp(12px, 2vw, 16px)',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
                 >
-                  <h4 style={{fontSize:'13px',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>AI Agent cost avoided</h4>
-                  <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Cost avoided from automating service tasks.</p>
+                  <h4 style={{fontSize:'clamp(12px, 2vw, 13px)',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>AI Agent cost avoided</h4>
+                  <p style={{fontSize:'clamp(11px, 1.5vw, 13px)',color:'#9ca3af',margin:'0'}}>Cost avoided from automating service tasks.</p>
                 </div>
                 {/* Record Growth Card */}
                 <div 
                   onClick={() => { setActiveHarvest('growth'); recordSQLLift(12); }}
-                  style={{background:'#0a1420',border:activeHarvest === 'growth' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'16px',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
+                  style={{background:'#0a1420',border:activeHarvest === 'growth' ? '2px solid #2563eb' : '1px solid #1e3a5f',borderRadius:'12px',padding:'clamp(12px, 2vw, 16px)',cursor:'pointer',transition:'all 0.2s',minHeight:'90px',display:'flex',flexDirection:'column',justifyContent:'flex-start'}}
                 >
-                  <h4 style={{fontSize:'13px',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>Record growth</h4>
-                  <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Add qualified deals to recognize growth revenue.</p>
+                  <h4 style={{fontSize:'clamp(12px, 2vw, 13px)',fontWeight:'600',color:'#ffffff',margin:'0 0 6px 0'}}>Record growth</h4>
+                  <p style={{fontSize:'clamp(11px, 1.5vw, 13px)',color:'#9ca3af',margin:'0'}}>Add qualified deals to recognize growth revenue.</p>
                 </div>
               </div>
 
               {/* Evidence Log Section */}
-              <div style={{padding:'24px'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Evidence log (realized)</h3>
+              <div style={{padding:'clamp(12px, 3vw, 24px)'}}>
+                <h3 style={{fontSize:'clamp(14px, 3vw, 16px)',fontWeight:'600',color:'#ffffff',margin:'0 0 16px 0'}}>Evidence log (realized)</h3>
                 <div style={{overflowX:'auto'}}>
-                  <table style={{width:'100%',borderCollapse:'collapse',fontSize:'13px'}}>
+                  <table style={{width:'100%',borderCollapse:'collapse',fontSize:'clamp(11px, 2vw, 13px)'}}>
                     <thead>
                       <tr style={{borderBottom:'1px solid #1e3a5f'}}>
                         <th style={{textAlign:'left',padding:'8px 0',color:'#9ca3af',fontWeight:'600',fontSize:'12px'}}>Item</th>
@@ -504,16 +504,16 @@ function closeTask(taskId: string, iso: string){
         // PRODUCT MANAGER VIEW
         <div style={{minHeight:'100vh',background:'#0a1420'}} id="manager-header">
           {/* Top Header with Velocity AI branding and demo button */}
-          <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'40px 32px',borderBottom:'1px solid #1e3a5f'}}>
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',maxWidth:'1400px',margin:'0 auto'}}>
+          <div style={{background:'linear-gradient(135deg, #0a1420 0%, #101c2c 100%)',padding:'clamp(20px, 5vw, 40px) clamp(16px, 5vw, 32px)',borderBottom:'1px solid #1e3a5f'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',maxWidth:'1400px',margin:'0 auto',flexWrap:'wrap',gap:'16px'}}>
               <div>
-                <h1 style={{fontSize:'36px',fontWeight:'800',color:'#ffffff',margin:'0 0 8px 0'}}>Velocity AI</h1>
-                <p style={{fontSize:'15px',color:'#9ca3af',margin:'0'}}>Turn AI into dollars</p>
+                <h1 style={{fontSize:'clamp(24px, 6vw, 36px)',fontWeight:'800',color:'#ffffff',margin:'0 0 8px 0'}}>Velocity AI</h1>
+                <p style={{fontSize:'clamp(12px, 3vw, 15px)',color:'#9ca3af',margin:'0'}}>Turn AI into dollars</p>
               </div>
               <button 
                 className="btn" 
                 onClick={startTour}
-                style={{padding:'12px 28px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'16px',fontWeight:'700',cursor:'pointer',transition:'background 0.2s'}}
+                style={{padding:'12px 28px',background:'#2563eb',color:'#ffffff',border:'none',borderRadius:'8px',fontSize:'clamp(14px, 2vw, 16px)',fontWeight:'700',cursor:'pointer',transition:'background 0.2s',whiteSpace:'nowrap'}}
               >
                 Start a guided demo
               </button>
@@ -521,39 +521,39 @@ function closeTask(taskId: string, iso: string){
           </div>
 
           {/* Turn AI time into dollars section with toggle */}
-          <div style={{padding:'32px 32px',borderBottom:'1px solid #1e3a5f',maxWidth:'1400px',margin:'0 auto'}} id="manager-filter">
-            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+          <div style={{padding:'clamp(20px, 5vw, 32px) clamp(16px, 5vw, 32px)',borderBottom:'1px solid #1e3a5f',maxWidth:'1400px',margin:'0 auto'}} id="manager-filter">
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',flexDirection:'column',gap:'24px'}}>
               <div>
-                <h2 style={{fontSize:'24px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>Turn AI time into dollars</h2>
-                <p style={{fontSize:'14px',color:'#9ca3af',margin:'0',maxWidth:'700px',lineHeight:'1.6'}}>We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
+                <h2 style={{fontSize:'clamp(18px, 5vw, 24px)',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>Turn AI time into dollars</h2>
+                <p style={{fontSize:'clamp(12px, 2.5vw, 14px)',color:'#9ca3af',margin:'0',maxWidth:'700px',lineHeight:'1.6'}}>We connect your AI tools (Copilot, Asana AI, Workflows, RPA, AI Agents), capture the time they create, redeploy it to priority work, and prove dollars—Operational, Cost avoided, Strategic. No forecasts. No timesheets.</p>
               </div>
               {/* View Mode Toggle */}
-              <div style={{display:'flex',gap:'12px',alignItems:'center',flexShrink:0,marginLeft:'32px'}}>
-                <span style={{fontSize:'13px',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
+              <div style={{display:'flex',gap:'12px',alignItems:'center',flexWrap:'wrap'}}>
+                <span style={{fontSize:'clamp(11px, 2vw, 13px)',color:(viewMode as string) === 'executive' ? '#ffffff' : '#9ca3af'}}>Executive View</span>
                 <div 
-                  style={{width:'48px',height:'24px',background:'#2563eb',borderRadius:'12px',position:'relative',cursor:'pointer',display:'flex',alignItems:'center',padding:'2px',transition:'all 0.3s ease'}}
+                  style={{width:'48px',height:'24px',background:'#2563eb',borderRadius:'12px',position:'relative',cursor:'pointer',display:'flex',alignItems:'center',padding:'2px',transition:'all 0.3s ease',flexShrink:0}}
                   onClick={() => setViewMode((viewMode as string) === 'executive' ? 'product' : 'executive')}
                 >
                   <div style={{width:'20px',height:'20px',background:'#ffffff',borderRadius:'10px',position:'absolute',left:(viewMode as string) === 'executive' ? '2px' : '26px',transition:'left 0.3s ease'}} />
                 </div>
-                <span style={{fontSize:'13px',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
+                <span style={{fontSize:'clamp(11px, 2vw, 13px)',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
               </div>
             </div>
           </div>
 
-          <div style={{padding:'32px'}}>
+          <div style={{padding:'clamp(16px, 4vw, 32px)',maxWidth:'1400px',margin:'0 auto'}}>
             {/* Project Metrics Timeline */}
-          <div style={{background:'var(--card)',padding:'16px',borderRadius:'8px',border:'1px solid #253041',marginBottom:'32px'}} id="manager-metrics">
-            <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'12px'}}>This Week's Progress</h2>
+          <div style={{background:'var(--card)',padding:'clamp(12px, 2vw, 16px)',borderRadius:'8px',border:'1px solid #253041',marginBottom:'clamp(20px, 4vw, 32px)'}} id="manager-metrics">
+            <h2 style={{fontSize:'clamp(16px, 3vw, 18px)',fontWeight:'700',color:'var(--text)',marginBottom:'12px'}}>This Week's Progress</h2>
             <ProjectTimeline />
           </div>
 
           {/* Main Grid: Gantt + AI Suggestions Sidebar */}
-          <div style={{display:'grid',gridTemplateColumns:'1fr 340px',gap:'24px',marginBottom:'32px'}}>
+          <div className="manager-grid" style={{display:'grid',gridTemplateColumns:'1fr',gap:'clamp(16px, 3vw, 24px)',marginBottom:'clamp(20px, 4vw, 32px)'}}>
             {/* Left: Gantt Chart */}
             <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',overflow:'hidden'}} id="manager-gantt">
-              <div style={{padding:'16px',borderBottom:'1px solid #253041'}}>
-                <h2 style={{fontSize:'16px',fontWeight:'700',color:'var(--text)',margin:'0'}}>Project Timeline & Status</h2>
+              <div style={{padding:'clamp(12px, 2vw, 16px)',borderBottom:'1px solid #253041'}}>
+                <h2 style={{fontSize:'clamp(14px, 2.5vw, 16px)',fontWeight:'700',color:'var(--text)',margin:'0'}}>Project Timeline & Status</h2>
               </div>
               <GanttChart 
                 tasks={tasksFiltered}
@@ -568,11 +568,11 @@ function closeTask(taskId: string, iso: string){
               />
             </div>
 
-            {/* Right: AI Suggestions Sidebar */}
-            <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',padding:'16px',height:'100%',position:'sticky',top:'24px'}} id="manager-suggestions">
+            {/* Right: AI Suggestions Sidebar - stacks on mobile */}
+            <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',padding:'clamp(12px, 2vw, 16px)',minHeight:'fit-content'}} id="manager-suggestions">
               <div style={{marginBottom:'16px'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'700',color:'var(--text)',margin:'0 0 8px 0'}}></h3>
-                <p style={{fontSize:'12px',color:'var(--muted)',margin:'0'}}></p>
+                <h3 style={{fontSize:'clamp(14px, 2.5vw, 16px)',fontWeight:'700',color:'var(--text)',margin:'0 0 8px 0'}}></h3>
+                <p style={{fontSize:'clamp(11px, 2vw, 12px)',color:'var(--muted)',margin:'0'}}></p>
               </div>
               <AISuggestions selectedProject={selectedProjectForSuggestions} />
             </div>
