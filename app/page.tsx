@@ -397,50 +397,55 @@ function closeTask(taskId: string, iso: string){
         </div>
       ) : (
         // PRODUCT MANAGER VIEW
-        <div style={{display:'grid',gridTemplateColumns:'1fr 380px',gap:'32px',marginTop:'32px'}}>
-          {/* Main content area */}
-          <div style={{display:'flex',flexDirection:'column',gap:'32px'}}>
-            {/* View Mode Toggle */}
-            <div style={{display:'flex',justifyContent:'center',gap:'12px',marginBottom:'0'}}>
-              <button 
-                style={{padding:'8px 16px',background:((viewMode as string) === 'executive' ? 'var(--blue)' : '#1f2937'),border:'none',borderRadius:'6px',color:'#fff',cursor:'pointer',fontSize:'13px',fontWeight:'500'}}
-                onClick={() => setViewMode('executive')}
-              >
-                Executive View
-              </button>
-              <button 
-                style={{padding:'8px 16px',background:((viewMode as string) === 'product' ? 'var(--blue)' : '#1f2937'),border:'none',borderRadius:'6px',color:'#fff',cursor:'pointer',fontSize:'13px',fontWeight:'500'}}
-                onClick={() => setViewMode('product')}
-              >
-                Product Manager View
-              </button>
-            </div>
-
-            {/* PM Dashboard Header */}
-            <DashboardHeader />
-
-            {/* Project Metrics Timeline */}
-            <div>
-              <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'16px'}}>AI-Optimized Project Timeline</h2>
-              <p style={{fontSize:'13px',color:'var(--muted)',marginBottom:'16px'}}>Track impact metrics, dependencies, and time savings achieved through WorkX Agent insights.</p>
-              <ProjectTimeline />
-            </div>
-
-            {/* Gantt Chart */}
-            <div>
-              <h2 style={{fontSize:'18px',fontWeight:'700',color:'var(--text)',marginBottom:'16px'}}>Gantt — weekly freed time + critical path hotspots</h2>
-              <GanttChart />
-            </div>
-
-            {/* Team Utilization */}
-            <TeamUtilization />
+        <div className="space-y-6">
+          {/* View Mode Toggle */}
+          <div style={{display:'flex',justifyContent:'center',gap:'12px',marginBottom:'16px'}}>
+            <button 
+              className={`btn ${(viewMode as string) === 'executive' ? '' : 'secondary'}`}
+              onClick={() => setViewMode('executive')}
+            >
+              Executive View
+            </button>
+            <button 
+              className={`btn ${(viewMode as string) === 'product' ? '' : 'secondary'}`}
+              onClick={() => setViewMode('product')}
+            >
+              Product Manager View
+            </button>
           </div>
 
-          {/* Sidebar - AI Suggestions */}
-          <div style={{position:'sticky',top:'24px',height:'fit-content'}}>
-            <div style={{background:'var(--card)',border:'1px solid #253041',borderRadius:'8px',padding:'16px'}}>
-              <AISuggestions />
-            </div>
+          {/* PM Dashboard Header */}
+          <DashboardHeader />
+
+          {/* Project Metrics Timeline */}
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">This Week's Progress</h2>
+            <ProjectTimeline />
+          </div>
+
+          {/* Gantt Chart */}
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Project Timeline & Status</h2>
+            <GanttChart 
+              tasks={tasksFiltered}
+              capacity={capFiltered}
+              onAllocate={allocate}
+              onComplete={closeTask}
+              projects={projects}
+              currentProject={project}
+              onProjectChange={(p) => setProject(p)}
+            />
+          </div>
+
+          {/* AI Suggestions */}
+          <div className="bg-white p-6 rounded-lg border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">AI-Powered Recommendations</h2>
+            <AISuggestions />
+          </div>
+
+          {/* Team Utilization */}
+          <div className="bg-white rounded-lg border border-gray-200">
+            <TeamUtilization />
           </div>
         </div>
       )}
