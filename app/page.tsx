@@ -598,54 +598,6 @@ function closeTask(taskId: string, iso: string){
             <TeamUtilization />
           </div>
 
-          {/* Download Reports Popup Modal */}
-          {showDownloadPopup && (
-            <div style={{
-              position:'fixed',
-              top:0,
-              left:0,
-              width:'100%',
-              height:'100%',
-              background:'rgba(0,0,0,0.5)',
-              display:'flex',
-              alignItems:'center',
-              justifyContent:'center',
-              zIndex:10000
-            }} onClick={() => setShowDownloadPopup(false)}>
-              <div style={{
-                background:'#1a2a3a',
-                border:'1px solid #2563eb',
-                borderRadius:'12px',
-                padding:'32px',
-                maxWidth:'400px',
-                boxShadow:'0 20px 25px -5px rgba(0, 0, 0, 0.5)'
-              }} onClick={(e) => e.stopPropagation()}>
-                <h2 style={{fontSize:'18px',fontWeight:'700',color:'#ffffff',margin:'0 0 16px 0'}}>Download Reports</h2>
-                <p style={{fontSize:'14px',color:'#d1d5db',margin:'0 0 24px 0',lineHeight:'1.6'}}>Report consolidation in progress. This will help you summarize all dashboard data.</p>
-                <div style={{display:'flex',gap:'12px',justifyContent:'flex-end'}}>
-                  <button 
-                    onClick={() => setShowDownloadPopup(false)}
-                    style={{
-                      padding:'8px 16px',
-                      background:'#374151',
-                      color:'#ffffff',
-                      border:'none',
-                      borderRadius:'6px',
-                      fontSize:'13px',
-                      fontWeight:'600',
-                      cursor:'pointer',
-                      transition:'background 0.2s ease'
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Guided tour overlay */}
           <Tour
             open={tourOpen}
@@ -655,6 +607,54 @@ function closeTask(taskId: string, iso: string){
             onPrev={prevStep}
             onClose={()=>setTourOpen(false)}
           />
+          </div>
+        </div>
+      )}
+
+      {/* Download Reports Popup Modal - Outside view sections */}
+      {showDownloadPopup && (
+        <div style={{
+          position:'fixed',
+          top:0,
+          left:0,
+          width:'100%',
+          height:'100%',
+          background:'rgba(0,0,0,0.5)',
+          display:'flex',
+          alignItems:'center',
+          justifyContent:'center',
+          zIndex:10000
+        }} onClick={() => setShowDownloadPopup(false)}>
+          <div style={{
+            background:'#1a2a3a',
+            border:'1px solid #2563eb',
+            borderRadius:'12px',
+            padding:'32px',
+            maxWidth:'400px',
+            boxShadow:'0 20px 25px -5px rgba(0, 0, 0, 0.5)'
+          }} onClick={(e) => e.stopPropagation()}>
+            <h2 style={{fontSize:'18px',fontWeight:'700',color:'#ffffff',margin:'0 0 16px 0'}}>Download Reports</h2>
+            <p style={{fontSize:'14px',color:'#d1d5db',margin:'0 0 24px 0',lineHeight:'1.6'}}>Report consolidation in progress. This will help you summarize all dashboard data.</p>
+            <div style={{display:'flex',gap:'12px',justifyContent:'flex-end'}}>
+              <button 
+                onClick={() => setShowDownloadPopup(false)}
+                style={{
+                  padding:'8px 16px',
+                  background:'#374151',
+                  color:'#ffffff',
+                  border:'none',
+                  borderRadius:'6px',
+                  fontSize:'13px',
+                  fontWeight:'600',
+                  cursor:'pointer',
+                  transition:'background 0.2s ease'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
