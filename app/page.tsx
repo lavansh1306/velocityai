@@ -214,7 +214,7 @@ function closeTask(taskId: string, iso: string){
   // Guided tour (Next/Back)
   const executiveTourSteps: TourStep[] = [
     { id:'welcome', title:'Welcome to VelocityAI', text:'We turn AI time saved into dollars by mapping high‑value work, redeploying freed time, and booking value only when outcomes are realized.', targetId:'start-guided-demo' },
-    { id:'roi-summary', title:'What we measure', text:'Operational (days saved × CoD/day), Cost avoided (hard savings), Strategic (growth/capability). This is your CFO‑grade summary.', targetId:'roi-summary' },
+    { id:'roi-summary', title:'What we measure', text:'Operational (days saved × CoD/day), Cost avoided (hard savings), Strategic (growth/capability).', targetId:'roi-summary' },
     { id:'capacity-toggles', title:'Where time came from', text:'These drivers created free hours this week. Turn them on to populate the capacity ledger and harvestable savings.', targetId:'capacity-toggles', run:()=>{ setSimRPA(true); setSimSVC(true) } },
     { id:'gantt-hotspot', title:'Aim at the current constraint', text:'We score milestones by cost‑of‑delay and slack. Design QA is critical. Let\'s route time here.', targetId:'task-design-qa', run:()=>allocate('t1', 8) },
     { id:'redeploy-panel', title:'Redeploy freed time to high‑value work', text:'We\'ll redeploy 8h from Design to Design QA. That predicts ≈ 1 day earlier finish.', targetId:'redeploy-panel' },
