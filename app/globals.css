@@ -1,20 +1,8 @@
 :root { --bg:#0c1116; --card:#111826; --text:#e6edf3; --muted:#a7b1bd; --green:#22c55e; --amber:#f59e0b; --red:#ef4444; --blue:#3b82f6; }
 
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}
 
-/* Responsive base styling */
-@media (max-width: 1024px) {
-  body { font-size: 14px; }
-}
-
-@media (max-width: 768px) {
-  body { font-size: 13px; }
-}
-
-@media (max-width: 480px) {
-  body { font-size: 12px; }
-}
 
 /* ROI card styling — compact and centered when shown */
 .roiWrapper{display:flex;justify-content:center;margin-top:12px}
@@ -42,7 +30,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui
 	.roiBox{width:calc(100% - 40px);padding:14px}
 	.roiBox .roiText{font-size:36px}
 }
-@media (max-width: 480px){
+@media (max-width: 420px){
 	.roiBox{width:calc(100% - 24px);padding:10px}
 	.roiBox .roiText{font-size:20px}
 }
@@ -55,7 +43,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui
 	.roiCard .roiValue{font-size:48px}
 	.roiCard .roiTitle{font-size:16px}
 }
-@media (max-width: 480px){
+@media (max-width: 420px){
 	.roiCard .roiValue{font-size:30px}
 	.roiCard .roiTitle{font-size:14px}
 }
@@ -77,33 +65,32 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui
 	.row{flex-direction:column}
 	.kpi{min-width:100%;width:100%}
 	.card{padding:16px}
-	.btn{width:auto;display:inline-block;font-size:clamp(12px, 2vw, 14px);padding:10px 16px}
+	.btn{width:100%;display:block}
 	.row > .card.kpi{margin-bottom:12px}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 420px) {
 	.container{padding:0 12px;margin:12px auto}
 	.card{padding:12px}
 	.small{font-size:11px}
 	.h{font-size:18px}
-	.btn{font-size:12px;padding:8px 12px}
 }
 
 /* Buttons/badges/inputs */
-.btn{background:var(--blue);border:none;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:clamp(12px, 2vw, 14px)}
+.btn{background:var(--blue);border:none;color:#fff;padding:10px 14px;border-radius:8px;cursor:pointer}
 .btn.secondary{background:#1f2937}
 .btn.ghost{background:transparent;border:1px solid #253041;color:#e6edf3}
 .badge{padding:4px 8px;border-radius:12px;font-size:12px}
 .badge.green{background:#16351f;color:#69d391}
 .badge.red{background:#3b1b1b;color:#ff8b8b}
 .badge.amber{background:#3b2a15;color:#ffcc80}
-.input{background:#0b1420;border:1px solid #253041;color:#e6edf3;padding:8px;border-radius:8px;font-size:clamp(12px, 2vw, 14px)}
+.input{background:#0b1420;border:1px solid #253041;color:#e6edf3;padding:8px;border-radius:8px}
 
 /* Tables/text */
 .table{width:100%;border-collapse:collapse}
-.table th,.table td{border-bottom:1px solid #253041;padding:10px;text-align:left;font-size:clamp(11px, 2vw, 14px)}
-.h{margin:0 0 10px;font-size:clamp(16px, 4vw, 24px)}
-.small{color:var(--muted);font-size:clamp(10px, 1.5vw, 12px)}
+.table th,.table td{border-bottom:1px solid #253041;padding:10px;text-align:left;font-size:14px}
+.h{margin:0 0 10px}
+.small{color:var(--muted);font-size:12px}
 hr{border-color:#1f2937;margin:16px 0}
 .switch{display:inline-flex;align-items:center;gap:8px;margin-right:12px}
 .switch input{accent-color:#3b82f6;width:18px;height:18px}
@@ -112,51 +99,46 @@ hr{border-color:#1f2937;margin:16px 0}
 .gantt{position:relative;overflow-x:auto;border:1px solid #253041;border-radius:12px}
 .ganttGrid{display:grid}
 .ganttHeader{display:contents}
-.headT,.headA{padding:6px 8px;font-weight:600;font-size:clamp(11px, 2vw, 13px)}
-.cell{padding:6px 8px;font-size:clamp(10px, 1.5vw, 12px);color:#a7b1bd;border-bottom:1px solid #253041}
+.headT,.headA{padding:6px 8px;font-weight:600}
+.cell{padding:6px 8px;font-size:12px;color:#a7b1bd;border-bottom:1px solid #253041}
 .ganttRow{display:contents}
 .taskCell,.dayCell,.actionCell{border-bottom:1px dashed #1f2937}
-.taskCell{padding:10px 8px;font-size:clamp(11px, 1.5vw, 13px)}
+.taskCell{padding:10px 8px}
 .tName{font-weight:700}
-.dayCell{position:relative;height:36px;border-left:1px solid #17202b}
+.dayCell{position:relative;height:36px;border-left:1px solid #17202b;overflow:visible}
 .dayCell{min-width:56px}
 .dayCell:nth-child(odd){background:#0b1420}
 
+.bar{position:absolute;top:8px;height:20px;border-radius:8px;display:flex;align-items:center;gap:6px;padding:0 8px;font-size:12px;white-space:nowrap;z-index:1000}
+.bar.hot{background:#3b1b1b;color:#ff8b8b;border:1px solid #6b1d1d;padding:0 20px;height:20px;font-size:12px;border-radius:10px;min-width:520px;justify-content:center;max-width:90%;z-index:1010}
+.bar.hot span{display:inline-block;min-width:360px;text-align:center}
+
+/* Responsive: reduce wide critical pill on small screens to avoid overflow */
 @media (max-width: 768px) {
-	.dayCell {min-width: 44px; height: 32px;}
-	.headT, .headA {padding: 4px 6px;}
-	.taskCell {padding: 8px 6px;}
+  .bar.hot{min-width:120px;padding:0 10px;max-width:70%}
+  .bar.hot span{min-width:80px}
+  .bar.amber{min-width:90px;padding:0 8px;max-width:70%}
+  .bar.amber span{min-width:60px}
 }
 
-@media (max-width: 480px) {
-	.dayCell {min-width: 36px; height: 28px;}
-	.headT, .headA {padding: 2px 4px; font-size: 10px;}
-	.taskCell {padding: 6px 4px;}
-}
-
-/* Bars & states */
-.bar{position:absolute;top:8px;height:20px;border-radius:8px;display:flex;align-items:center;gap:6px;padding:0 8px;font-size:12px;white-space:nowrap}
-.bar.hot{background:#3b1b1b;color:#ff8b8b;border:1px solid #6b1d1d}
-.bar.amber{background:#3b2a15;color:#ffcc80;border:1px solid #6b3d0f}
+/* Amber (Near) pill — slightly narrower than Critical */
+.bar.amber{background:#3b2a15;color:#ffcc80;border:1px solid #6b3d0f;padding:0 18px;height:20px;font-size:12px;border-radius:10px;min-width:290px;justify-content:center;max-width:1005%;z-index:1005}
+.bar.amber span{display:inline-block;min-width:330px;text-align:center}
 .bar.ok{background:#18351f;color:#79d08f;border:1px solid #1e6f43}
 .allocPill{background:#0b2140;color:#9cc2ff;border:1px solid #214c8e;border-radius:12px;padding:2px 6px;font-size:11px}
 
 /* Weekly ghost + tick */
-.ghostBar{position:absolute;top:0;height:20px;border:1px dashed #6aa7ff;border-radius:8px;background:transparent}
+.ghostBar{position:absolute;top:0;height:20px;border:1px dashed #6aa7ff;border-radius:8px;background:transparent;z-index:900}
 .oldDueTick{position:absolute;top:-2px;width:2px;height:24px;background:#6aa7ff;border-radius:1px}
 
 /* Actions */
-.actionCell{padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-
-@media (max-width: 768px) {
-	.actionCell {flex-direction: column; gap: 4px;}
-}
+.actionCell{padding:8px;display:flex;gap:8px;align-items:center}
 
 /* Weekly capacity pill */
 .capacityBlock{position:absolute;top:6px;left:6px;background:#12321f;color:#69d391;border:1px solid #1d7a42;border-radius:12px;padding:2px 6px;font-size:11px}
 
 /* Legend */
-.legend{display:flex;align-items:center;gap:16px;padding:8px 12px;border-bottom:1px solid #253041;color:#a7b1bd;font-size:clamp(10px, 1.5vw, 12px);flex-wrap:wrap}
+.legend{display:flex;align-items:center;gap:16px;padding:8px 12px;border-bottom:1px solid #253041;color:#a7b1bd;font-size:12px;flex-wrap:wrap}
 .legendItem{display:flex;align-items:center;gap:8px}
 .legendColor{width:10px;height:10px;border-radius:50%}
 .legendColor.red{background:#ef4444}
@@ -167,100 +149,49 @@ hr{border-color:#1f2937;margin:16px 0}
 .depsSvg{position:absolute;top:0;left:0;pointer-events:none}
 
 /* Gantt top header (title + filters) */
-.ganttTop{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #253041;flex-wrap:wrap;gap:12px}
-.ganttTitle{font-size:clamp(14px, 3vw, 18px);font-weight:700}
-.projectFilters{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.filterBtn{background:#0f1720;border:1px solid #253041;color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer;font-size:clamp(11px, 2vw, 13px)}
+.ganttTop{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #253041}
+.ganttTitle{font-size:18px;font-weight:700}
+.projectFilters{display:flex;gap:8px;align-items:center}
+.filterBtn{background:#0f1720;border:1px solid #253041;color:var(--text);padding:6px 10px;border-radius:8px;cursor:pointer;font-size:13px}
 .filterBtn.active{background:var(--blue);color:#fff;border-color:transparent}
 
 /* Add styles for the time filter dropdown */
 .filterDropdown {
-  background-color: #1e293b;
-  color: #e2e8f0;
-  border: 1px solid #334155;
-  border-radius: 4px;
-  padding: 6px 12px;
-  font-size: clamp(11px, 2vw, 14px);
-  cursor: pointer;
+  background-color: #1e293b; /* Dark background matching the theme */
+  color: #e2e8f0; /* Light text color */
+  border: 1px solid #334155; /* Border matching the theme */
+  border-radius: 4px; /* Rounded corners */
+  padding: 6px 12px; /* Padding for better spacing */
+  font-size: 14px; /* Font size matching the theme */
+  cursor: pointer; /* Pointer cursor for better UX */
 }
 
 .filterDropdown:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px #3b82f6;
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 2px #3b82f6; /* Add a blue focus ring */
 }
 
 .filterDropdown option {
-  background-color: #1e293b;
-  color: #e2e8f0;
+  background-color: #1e293b; /* Match dropdown background */
+  color: #e2e8f0; /* Match text color */
 }
 
 /* Ensure tables and grids shrink on small screens */
 @media (max-width: 768px) {
-	.table th,.table td{font-size:clamp(10px, 1.5vw, 12px)}
+	.table th,.table td{font-size:12px}
 	.dayCell{height:32px}
 	.depsSvg{height:calc(100%)}
 }
 
-@media (max-width: 480px) {
-	.table th,.table td{font-size:10px;padding:6px 0}
-}
-
 /* Tour overlay (if used) */
-.tourOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;padding:clamp(12px, 4vw, 24px)}
-.tourCard{background:var(--card);border:2px solid #3b82f6;border-radius:12px;padding:clamp(16px, 4vw, 24px);max-width:clamp(280px, 90vw, 500px);text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.8);z-index:10000}
-.tourCard h3{margin-bottom:12px;font-size:clamp(16px, 4vw, 20px);color:#ffffff}
-.tourCard p{margin-bottom:16px;font-size:clamp(12px, 2.5vw, 14px);line-height:1.6}
-.tourCard button{margin:8px 4px;padding:10px 20px;font-size:clamp(12px, 2vw, 14px);font-weight:600}
+.tourOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center}
+.tourCard{background:var(--card);border:2px solid #3b82f6;border-radius:12px;padding:24px;max-width:500px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.8);z-index:10000}
+.tourCard h3{margin-bottom:12px;font-size:20px;color:#ffffff}
+.tourCard p{margin-bottom:16px;font-size:14px;line-height:1.6}
+.tourCard button{margin:8px 4px;padding:10px 20px;font-size:14px;font-weight:600}
 
 .tour-highlight{
   box-shadow: 0 0 0 3px #3b82f6, inset 0 0 0 3px #3b82f6 !important;
   outline: 3px solid #3b82f6 !important;
   z-index: 9998 !important;
-}
-
-/* Mobile optimizations */
-@media (max-width: 1024px) {
-	.manager-grid {
-		grid-template-columns: 1fr !important;
-	}
-}
-
-@media (min-width: 1025px) {
-	.manager-grid {
-		grid-template-columns: 1fr 340px !important;
-	}
-}
-
-@media (max-width: 768px) {
-	.container {
-		max-width: 100%;
-	}
-	
-	/* Stack grids vertically on mobile */
-	[style*="gridTemplateColumns"] {
-		grid-template-columns: 1fr !important;
-	}
-	
-	/* Full width forms and inputs */
-	.input, .filterDropdown {
-		width: 100%;
-	}
-	
-	/* Improve button touch targets */
-	.btn {
-		min-height: 44px;
-		min-width: 44px;
-	}
-}
-
-@media (max-width: 480px) {
-	/* Reduce padding on very small screens */
-	[style*="padding"] {
-		padding: max(8px, 2.5vw) !important;
-	}
-	
-	/* Make all text elements responsive */
-	[style*="fontSize"] {
-		font-size: clamp(10px, 2vw, 14px) !important;
-	}
 }
