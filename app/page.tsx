@@ -52,6 +52,7 @@ export default function Page(){
   const [viewMode, setViewMode] = useState<'executive' | 'product'>('executive')
   const [activeHarvest, setActiveHarvest] = useState<'rpa' | 'service' | 'growth'>('rpa')
   const [selectedProjectForSuggestions, setSelectedProjectForSuggestions] = useState<string | null>(null)
+  const [showDownloadPopup, setShowDownloadPopup] = useState(false)
 
   // Guided tour
   const [tourOpen, setTourOpen] = useState(false)
@@ -321,6 +322,27 @@ function closeTask(taskId: string, iso: string){
                 <span style={{fontSize:'13px',color:(viewMode as string) === 'product' ? '#ffffff' : '#9ca3af',cursor:'pointer'}} onClick={() => setViewMode('product')}>Project Manager view</span>
               </div>
             </div>
+            {/* Download Reports Button */}
+            <div style={{marginTop:'16px',display:'flex',justifyContent:'flex-end'}}>
+              <button 
+                onClick={() => setShowDownloadPopup(true)}
+                style={{
+                  padding:'8px 16px',
+                  background:'#2563eb',
+                  color:'#ffffff',
+                  border:'none',
+                  borderRadius:'6px',
+                  fontSize:'13px',
+                  fontWeight:'600',
+                  cursor:'pointer',
+                  transition:'background 0.2s ease'
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = '#1d4ed8')}
+                onMouseLeave={(e) => (e.currentTarget.style.background = '#2563eb')}
+              >
+                Download Reports
+              </button>
+            </div>
           </div>
 
           {/* ROI Summary with gradient container and three cards */}
@@ -575,6 +597,54 @@ function closeTask(taskId: string, iso: string){
           <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',overflow:'hidden'}} id="pm-utilization">
             <TeamUtilization />
           </div>
+
+          {/* Download Reports Popup Modal */}
+          {showDownloadPopup && (
+            <div style={{
+              position:'fixed',
+              top:0,
+              left:0,
+              width:'100%',
+              height:'100%',
+              background:'rgba(0,0,0,0.5)',
+              display:'flex',
+              alignItems:'center',
+              justifyContent:'center',
+              zIndex:10000
+            }} onClick={() => setShowDownloadPopup(false)}>
+              <div style={{
+                background:'#1a2a3a',
+                border:'1px solid #2563eb',
+                borderRadius:'12px',
+                padding:'32px',
+                maxWidth:'400px',
+                boxShadow:'0 20px 25px -5px rgba(0, 0, 0, 0.5)'
+              }} onClick={(e) => e.stopPropagation()}>
+                <h2 style={{fontSize:'18px',fontWeight:'700',color:'#ffffff',margin:'0 0 16px 0'}}>Download Reports</h2>
+                <p style={{fontSize:'14px',color:'#d1d5db',margin:'0 0 24px 0',lineHeight:'1.6'}}>Report consolidation in progress. This will help you summarize all dashboard data.</p>
+                <div style={{display:'flex',gap:'12px',justifyContent:'flex-end'}}>
+                  <button 
+                    onClick={() => setShowDownloadPopup(false)}
+                    style={{
+                      padding:'8px 16px',
+                      background:'#374151',
+                      color:'#ffffff',
+                      border:'none',
+                      borderRadius:'6px',
+                      fontSize:'13px',
+                      fontWeight:'600',
+                      cursor:'pointer',
+                      transition:'background 0.2s ease'
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = '#4b5563')}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = '#374151')}
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Guided tour overlay */}
           <Tour
