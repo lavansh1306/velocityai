@@ -364,7 +364,7 @@ function closeTask(taskId: string, iso: string){
               {/* Strategic Card */}
               <div style={{display:'flex',flexDirection:'column'}}>
                 <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Strategic (growth/capability)</h3>
-                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>200 hours</div>
+                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>$20,000</div>
                 <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>More qualified deals and skill hours invested</p>
               </div>
             </div>
