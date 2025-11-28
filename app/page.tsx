@@ -358,7 +358,7 @@ function closeTask(taskId: string, iso: string){
               {/* Cost Avoided Card */}
               <div style={{display:'flex',flexDirection:'column'}}>
                 <h3 style={{fontSize:'16px',fontWeight:'600',color:'#ffffff',margin:'0 0 12px 0'}}>Cost avoided (Saved)</h3>
-                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>800 hours</div>
+                <div style={{fontSize:'40px',fontWeight:'700',color:'#ffffff',margin:'0 0 8px 0'}}>$10,000</div>
                 <p style={{fontSize:'13px',color:'#9ca3af',margin:'0'}}>Contractor/licence/time reductions tied to AI automation</p>
               </div>
               {/* Strategic Card */}
