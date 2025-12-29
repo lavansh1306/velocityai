@@ -585,10 +585,6 @@ function closeTask(taskId: string, iso: string){
 
             {/* Right: AI Suggestions Sidebar */}
             <div style={{background:'var(--card)',borderRadius:'8px',border:'1px solid #253041',padding:'16px',height:'100%',position:'sticky',top:'24px'}} id="pm-suggestions">
-              <div style={{marginBottom:'16px'}}>
-                <h3 style={{fontSize:'16px',fontWeight:'700',color:'var(--text)',margin:'0 0 8px 0'}}></h3>
-                <p style={{fontSize:'12px',color:'var(--muted)',margin:'0'}}></p>
-              </div>
               <AISuggestions selectedProject={selectedProjectForSuggestions} />
             </div>
           </div>
